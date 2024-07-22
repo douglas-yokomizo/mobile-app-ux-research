@@ -24,8 +24,7 @@ export default function Menu() {
                 <h1 className="p-12 text-5xl text-white">x</h1>
             </div>
         <div className='px-5 pb-4 flex items-center gap-4'>
-            <Image src={avatar} height={200} width={200} className='object-contain' />
-            <div>
+12            <div>
                 <p className='text-white text-4xl'>João da Costa Rodrigues</p> //TODO: puxar o nome no supabase do usuario
                 <p className='text-white text-3xl'>182.475.858-99</p>
                 <p className='text-white text-3xl'>28 Anos (28/01/1993)</p>
@@ -111,7 +110,7 @@ export default function Menu() {
           <div  className='border-b-2 border-gray-300 my-5'></div>
 
           <li>
-            <Link href="/" >
+            <Link href="/pagamento" >
               <div className='flex items-center text-3xl p-1'>
               <Image src={pagamento} width={80} height={80} alt="Menu Icon" className='mr-12'/>
                 <p>Pagamento</p>
