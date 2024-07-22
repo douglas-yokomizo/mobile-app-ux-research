@@ -1,9 +1,9 @@
-import Home from "./home/page";
+import Home from "./home/page.jsx";
 
 export default function Main() {
   return (
     <main>
-     <Home/>
+      <Home />
     </main>
   );
 }
