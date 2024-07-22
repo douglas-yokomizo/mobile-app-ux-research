@@ -14,6 +14,10 @@ module.exports = {
       },
       colors: {
         'blue-dark': '#031F45',
+        'blue-white': '#EEF5FF',
+        'captions-heading': '#1F508E',
+        'green-white': '#5A9A3D33',
+        'green-dark': '#1C4808',
       },
     },
   },
