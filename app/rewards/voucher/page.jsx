@@ -1,12 +1,17 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import HeaderNavigation from "../components/HeaderNavigation";
-import { email, listIcon, questionMark, uberBigCover } from "../assets/rewards";
-import Badge from "../components/Badge";
-import { arrow, gold } from "../assets/homePage";
-import TitleWithIcon from "../components/TitleWithIcon";
-import Modal from "../components/Modal";
+import HeaderNavigation from "../../components/HeaderNavigation";
+import {
+  email,
+  listIcon,
+  questionMark,
+  uberBigCover,
+} from "../../assets/rewards";
+import Badge from "../../components/Badge";
+import { arrow, gold } from "../../assets/homePage";
+import TitleWithIcon from "../../components/TitleWithIcon";
+import Modal from "../../components/Modal";
 import { useRouter } from "next/navigation";
 
 const VoucherDetails = () => {
@@ -17,7 +22,7 @@ const VoucherDetails = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const goToAnotherPage = () => {
-    route.push("/success");
+    route.push("/rewards/voucher/success");
     closeModal();
   };
 
