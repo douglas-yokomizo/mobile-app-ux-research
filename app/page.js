@@ -1,9 +1,9 @@
-import Home from "./home/page.jsx";
+import Register from './cadastro/page.js'
 
 export default function Main() {
   return (
     <main>
-      <Home />
+      <Register />
     </main>
   );
 }
