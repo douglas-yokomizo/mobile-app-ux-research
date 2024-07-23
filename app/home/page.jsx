@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import FooterNavigationHome from "../components/FooterNavigation";
 import * as homeAssets from "../assets/homePage";
+import Badge from "../components/Badge";
 
 export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -200,31 +201,21 @@ export default function Home() {
               Sincronizado em: 09:38:47 8 Abr 2024
             </p>
             <div className="flex gap-4 justify-between items-center">
-              <div className="flex w-1/2 items-center gap-2 bg-white p-3 py-4 rounded-full">
-                <Image
-                  src={homeAssets.starterShield}
-                  alt="begginer shield icon"
-                  className="w-7"
-                />
-                <p className="text-3xl">
-                  Nível <strong className="font-bold">Iniciante</strong>
-                </p>
-              </div>
-              <div className="flex w-1/2 items-center gap-2 bg-white p-3 py-4 rounded-full">
-                <Image src={homeAssets.gold} alt="gold icon" className="w-7 " />
-                <p className="text-3xl">
-                  Moedas <strong className="font-bold">1.000</strong>
-                </p>
-              </div>
-            </div>
-            <div>
-              <p className="mt-10 mb-4 text-3xl text-neutral-400 ">
-                Meu objetivo semanal
-              </p>
-              <Image
-                src={homeAssets.weekGoal}
-                alt="week goal image"
-                className="w-full bg-white p-4 rounded-2xl"
+              <Badge
+                src={homeAssets.starterShield}
+                alt={""}
+                bgColor={"bg-white"}
+                badgeTitle={"Nível"}
+                badgeValue={"Iniciante"}
+                className="w-1/2 rounded-full"
+              />
+              <Badge
+                src={homeAssets.gold}
+                badgeTitle={"Moedas"}
+                badgeValue={"1000"}
+                bgColor={"bg-white"}
+                alt={""}
+                className="w-1/2 rounded-full"
               />
             </div>
             <div className="flex items-center mt-4 mb-8">
