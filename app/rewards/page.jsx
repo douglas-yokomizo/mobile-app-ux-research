@@ -53,7 +53,7 @@ const RewardsPage = () => {
             title={"Uber"}
             value={"R$ 00,00"}
             coins={"Moedas fully"}
-            onClick={() => route.push("/voucher")}
+            onClick={() => route.push("/rewards/voucher")}
           />
           <RewardCard
             cover={rewardsAssets.xboxCover}
