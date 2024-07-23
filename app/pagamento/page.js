@@ -10,6 +10,7 @@ import arrowRight from '../assets/pagamento/arrow-right.svg';
 import extrato from '../assets/pagamento/extrato.svg';
 import HeaderNavigation from '../components/HeaderNavigation';
 import Link from 'next/link';
+import data from '../data/methodsPayment';
 
 export default function Pagamento() {
     return (
@@ -35,88 +36,43 @@ export default function Pagamento() {
         </div>
 
         <section className='px-12'>
-            <div className='bg-white rounded-2xl px-6 py-12 my-12'>
-                <div className='flex items-center gap-12'>
-                    <div className='p-2 border-gray-200 border-2 rounded-xl'>
-                    <Image src={mastercard} height={100} width={100} className='object-contain' />
-                    </div>
-                    <p className='font-bold text-5xl'>Mastercard</p>
-                </div>
-                <div className='flex justify-between text-4xl items-center pt-12 px-2'>
-                    <div>
-                        <p className='text-gray-500 mb-2'>Número do cartão</p>
-                        <p>**** ***** **** 8842</p>
-                    </div>
-                    <div>
-                        <p className='text-gray-500 mb-2'>Validade</p>
-                        <p>12/2031</p>
-                    </div>
-                </div>
-                <div className='border-b-2 border-gray-500 my-12'></div>
-
-                <div className='flex justify-between text-4xl items-center px-2'>
-                    <div>
-                        <p className='text-gray-500 mb-2'>Apólices</p>
-                        <p>Vida inteira</p>
-                        <p>Esposa</p>
-                    </div>
-                    <div>
-                        <p className='text-blue-600 mb-2 flex items-center gap-2'>Mais detalhes  <Image src={arrowRight} height={50} width={50} className='object-contain' /> </p>
-                    </div>
-                </div>
+      {data.map((item) => (
+        <div key={item.id} className='bg-white rounded-2xl px-6 py-12 my-12'>
+          <div className='flex items-center gap-12'>
+            <div className='p-2 border-gray-200 border-2 rounded-xl'>
+              <Image src={item.logo} height={100} width={100} className='object-contain' />
             </div>
-
-            <div className='bg-white rounded-2xl px-6 py-12 my-12'>
-                <div className='flex items-center gap-12'>
-                    <div className='p-2 border-gray-200 border-2 rounded-xl'>
-                    <Image src={itau} height={100} width={100} className='object-contain' />
-                    </div>
-                    <p className='font-bold text-5xl'>Banco Itaú</p>
+            <p className='font-bold text-5xl'>{item.name}</p>
+          </div>
+          {item.details.length > 0 && (
+            <div className='flex justify-between text-4xl items-center pt-12 px-2'>
+              {item.details.map((detail, index) => (
+                <div key={index}>
+                  <p className='text-gray-500 mb-2'>{detail.label}</p>
+                  <p>{detail.value}</p>
                 </div>
-                <div className='flex gap-12 text-4xl items-center pt-12 px-2'>
-                    <div>
-                        <p className='text-gray-500 mb-2'>Agência</p>
-                        <p>3416</p>
-                    </div>
-                    <div>
-                        <p className='text-gray-500 mb-2'>Conta</p>
-                        <p>011009-0</p>
-                    </div>
-                </div>
-                <div className='border-b-2 border-gray-500 my-12'></div>
-
-                <div className='flex justify-between text-4xl items-center px-2'>
-                    <div>
-                        <p className='text-gray-500 mb-2'>Apólices</p>
-                        <p>Filhos</p>
-                    </div>
-                    <div>
-                        <p className='text-blue-600 mb-2 flex items-center gap-2'>Mais detalhes  <Image src={arrowRight} height={50} width={50} className='object-contain' /> </p>
-                    </div>
-                </div>
+              ))}
             </div>
-
-
-            <div className='bg-white rounded-2xl px-6 py-12 my-12'>
-                <div className='flex items-center gap-12'>
-                    <div className='p-2 border-gray-200 border-2 rounded-xl'>
-                    <Image src={boleto} height={100} width={100} className='object-contain' />
-                    </div>
-                    <p className='font-bold text-5xl'>Boleto</p>
-                </div>
-                <div className='border-b-2 border-gray-500 my-12'></div>
-
-                <div className='flex justify-between text-4xl items-center px-2'>
-                    <div>
-                        <p className='text-gray-500 mb-2'>Apólices</p>
-                        <p>Doenças graves</p>
-                    </div>
-                    <div>
-                        <p className='text-blue-600 mb-2 flex items-center gap-2'>Mais detalhes  <Image src={arrowRight} height={50} width={50} className='object-contain' /> </p>
-                    </div>
-                </div>
+          )}
+          <div className='border-b-2 border-gray-500 my-12'></div>
+          <div className='flex justify-between text-4xl items-center px-2'>
+            <div>
+              <p className='text-gray-500 mb-2'>Apólices</p>
+              {item.policies.map((policy, index) => (
+                <p key={index}>{policy.name}</p>
+              ))}
             </div>
-        </section>
+            <div>
+            <Link href={`/paymentMethodDetail?id=${item.id}`}>
+              <p className='text-blue-600 mb-2 flex items-center gap-2'>
+                Mais detalhes <Image src={arrowRight} height={50} width={50} className='object-contain' />
+              </p>
+            </Link>
+            </div>
+          </div>
+        </div>
+      ))}
+    </section>
         </section>
 
         <section className='px-12 py-12'>
