@@ -6,9 +6,34 @@ import { email, listIcon, questionMark, uberBigCover } from "../assets/rewards";
 import Badge from "../components/Badge";
 import { arrow, gold } from "../assets/homePage";
 import TitleWithIcon from "../components/TitleWithIcon";
+import Modal from "../components/Modal";
+import { useRouter } from "next/navigation";
 
 const VoucherDetails = () => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const route = useRouter();
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const goToAnotherPage = () => {
+    route.push("/success");
+    closeModal();
+  };
+
+  const modalButtons = [
+    {
+      text: "Cancelar",
+      onClick: closeModal,
+      className: "w-1/2 px-4 py-6 text-3xl text-blue-text font-semibold",
+    },
+    {
+      text: "Resgatar agora",
+      onClick: goToAnotherPage,
+      className:
+        "bg-blue-text px-4 py-6 w-1/2 text-3xl rounded-full text-white font-semibold",
+    },
+  ];
 
   return (
     <main>
@@ -134,10 +159,26 @@ const VoucherDetails = () => {
               : "bg-blue-text text-white"
           }`}
           disabled={!isTermsAccepted}
+          onClick={openModal}
         >
           Resgatar
         </button>
       </section>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title="Resgatar Oferta"
+        buttons={modalButtons}
+      >
+        <p className="mb-8 mt-6 text-3xl">
+          Resgatar voucher Uber pelo valor de{" "}
+          <span className="font-bold">567 moedas Fully?</span>
+          <br />
+          <br />
+          Seu saldo atual é de: <span className="font-bold">1060 moedas. </span>
+          Deseja continuar?
+        </p>
+      </Modal>
     </main>
   );
 };
