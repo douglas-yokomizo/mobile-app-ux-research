@@ -1,7 +1,15 @@
-import React from "react";
+import HeaderNavigation from "../components/HeaderNavigation";
+import Tabs from "../components/Tabs";
+import TitleWithIcon from "../components/TitleWithIcon";
 
 const RewardsPage = () => {
-  return <div>RewardsPage</div>;
+  return (
+    <>
+      <HeaderNavigation title={"Resgatar recompensas"} />
+      <Tabs titles={["Recompensas disponíveis", "Histórico de recompensas"]} />
+      <TitleWithIcon title="Vourchers disponíveis" />
+    </>
+  );
 };
 
 export default RewardsPage;
