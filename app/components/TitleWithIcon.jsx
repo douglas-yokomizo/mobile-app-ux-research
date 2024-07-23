@@ -22,7 +22,7 @@ const TitleWithIcon = ({
           className="mr-6"
         />
       )}
-      <h1 className="text-6xl font-bold">{title}</h1>
+      <h1 className={className}>{title}</h1>
     </div>
   );
 };

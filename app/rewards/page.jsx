@@ -1,3 +1,5 @@
+"use client";
+import { useRouter } from "next/navigation";
 import HeaderNavigation from "../components/HeaderNavigation";
 import Tabs from "../components/Tabs";
 import TitleWithIcon from "../components/TitleWithIcon";
@@ -8,6 +10,8 @@ import Image from "next/image";
 import RewardCard from "../components/RewardCard";
 
 const RewardsPage = () => {
+  const route = useRouter();
+
   return (
     <main>
       <HeaderNavigation title={"Resgatar recompensas"} />
@@ -18,7 +22,7 @@ const RewardsPage = () => {
         iconAlt={"Medal icon"}
         iconWidth={50}
         iconHeight={50}
-        className="flex px-5"
+        className="flex px-5 text-6xl font-bold"
       />
       <div className="container pl-8">
         <p className="text-3xl my-10">
@@ -49,6 +53,7 @@ const RewardsPage = () => {
             title={"Uber"}
             value={"R$ 00,00"}
             coins={"Moedas fully"}
+            onClick={() => route.push("/voucher")}
           />
           <RewardCard
             cover={rewardsAssets.xboxCover}
@@ -75,17 +80,17 @@ const RewardsPage = () => {
         </div>
       </section>
       <section className="bg-blue-white py-10 flex flex-col items-center justify-center">
-        <div className="place-self-start">
+        <div className="place-self-start pl-24">
           <TitleWithIcon
             title="Resumo de moedas"
             iconSrc={rewardsAssets.resume}
             iconAlt={"Medal icon"}
             iconWidth={70}
             iconHeight={70}
-            className="flex pl-24"
+            className="flex text-6xl font-bold"
           />
         </div>
-        <div className="container ">
+        <div className="container">
           <p className="text-3xl my-10">
             Para consultar o extrato de moedas recebidas e resgates efetuados,
             clique no botão:
@@ -98,14 +103,14 @@ const RewardsPage = () => {
         </div>
       </section>
       <section className="bg-white py-10 flex flex-col items-center justify-center">
-        <div className="place-self-start">
+        <div className="place-self-start pl-24">
           <TitleWithIcon
             title="Carteira Prudential"
             iconSrc={rewardsAssets.prudentialIcon}
             iconAlt={"Medal icon"}
             iconWidth={70}
             iconHeight={70}
-            className="flex pl-24"
+            className="flex text-6xl font-bold"
           />
         </div>
         <div className="container ">

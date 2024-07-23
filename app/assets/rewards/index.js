@@ -7,6 +7,9 @@ import ifoodCover from "./ifoodCover.png";
 import add from "./add.svg";
 import resume from "./resume.svg";
 import prudentialIcon from "./prudential.svg";
+import uberBigCover from "./uberBigCover.png";
+import listIcon from "./listIcon.svg";
+import email from "./email.svg";
 
 export {
   medal,
@@ -18,4 +21,7 @@ export {
   add,
   resume,
   prudentialIcon,
+  uberBigCover,
+  listIcon,
+  email,
 };

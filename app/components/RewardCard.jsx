@@ -2,9 +2,12 @@ import Image from "next/image";
 import Badge from "./Badge";
 import { gold } from "../assets/homePage";
 
-const RewardCard = ({ cover, title, value }) => {
+const RewardCard = ({ cover, title, value, onClick }) => {
   return (
-    <div className="bg-white shadow-lg rounded-2xl overflow-hidden w-2/5">
+    <div
+      className="bg-white shadow-lg rounded-2xl overflow-hidden w-2/5 cursor-pointer"
+      onClick={onClick}
+    >
       <Image src={cover} alt={title} className="object-cover w-full" />
       <div className="p-9 bg-gray-light">
         <h3 className="text-4xl font-bold mb-2">{title}</h3>
