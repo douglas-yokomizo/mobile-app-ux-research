@@ -25,6 +25,7 @@ module.exports = {
         "gray-light": "#F6F6F7",
         "gray-text": "#5E5E63",
         divider: "#CECED4",
+        "red-error": "#F8DFE0",
       },
     },
   },
