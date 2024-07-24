@@ -1,17 +1,25 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useState, useRef, useEffect } from 'react';
 import FooterNavigationHome from "../components/FooterNavigation";
 import * as homeAssets from "../assets/homePage";
 
 export default function Home() {
 	const [isExpanded, setIsExpanded] = useState(false);
+	const [playerName, setPlayerName] = useState('');
 	const contentRef = useRef(null);
 
 	const toggleDetails = () => {
 		setIsExpanded(!isExpanded);
 	};
+
+	useEffect(() => {
+		const name = localStorage.getItem("name");
+		if (name) {
+			setPlayerName(name);
+		}
+	}, []);
 
 	const maxHeight = isExpanded ? `${contentRef.current.scrollHeight}px` : "0px";
 
@@ -28,7 +36,7 @@ export default function Home() {
 								width={120}
 							/>
 							<div className="font-bold">
-								<h2 className="text-4xl mb-4">Olá, João Pedro</h2>
+								<h2 className="text-4xl mb-4">{playerName}</h2>
 								<h3 className="text-2xl flex items-center gap-2">
 									Meu perfil{" "}
 									<Image
@@ -189,9 +197,8 @@ export default function Home() {
 							<button onClick={toggleDetails} className="flex p-4">
 								<Image
 									src={homeAssets.arrow}
-									className={`transition-transform ${
-										isExpanded ? "rotate-[270deg]" : "rotate-90"
-									} w-10 h-10 filter saturate-100 brightness-50`}
+									className={`transition-transform ${isExpanded ? "rotate-[270deg]" : "rotate-90"
+										} w-10 h-10 filter saturate-100 brightness-50`}
 									alt="arrow icon"
 								/>
 							</button>
@@ -251,9 +258,8 @@ export default function Home() {
 						<div
 							ref={contentRef}
 							style={{ maxHeight: maxHeight }}
-							className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
-								isExpanded ? "max-h-96" : "max-h-0"
-							}`}
+							className={`transition-max-height duration-500 ease-in-out overflow-hidden ${isExpanded ? "max-h-96" : "max-h-0"
+								}`}
 						>
 							<div>
 								<p className="mt-10 mb-4 text-3xl text-neutral-400 ">
