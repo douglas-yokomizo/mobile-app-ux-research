@@ -1,9 +1,21 @@
+"use client";
 import Image from "next/image";
 import SuccessMessage from "@/app/components/SuccessMessage";
 import duplicate from "@/app/assets/success/duplicate.svg";
 import { arrow, gold } from "@/app/assets/homePage";
 import InfoCard from "@/app/components/InfoCard";
 import Badge from "@/app/components/Badge";
+import { motion } from "framer-motion";
+
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  visible: (i) => ({
+    opacity: 1,
+    transition: {
+      delay: i * 0.2, // Delay based on the index
+    },
+  }),
+};
 
 const SuccessPage = () => {
   const cardItems = [
@@ -40,11 +52,31 @@ const SuccessPage = () => {
     <div>
       <SuccessMessage />
       <section className="p-10">
-        <h2 className="font-bold text-4xl mt-5">Código do voucher</h2>
-        <p className="text-3xl mt-8 p-6 text-center border-4 rounded-2xl border-dotted border-black bg-gray-light">
+        <motion.h2
+          initial="hidden"
+          animate="visible"
+          custom={0}
+          variants={fadeInVariants}
+          className="font-bold text-4xl mt-5"
+        >
+          Código do voucher
+        </motion.h2>
+        <motion.p
+          initial="hidden"
+          animate="visible"
+          custom={1}
+          variants={fadeInVariants}
+          className="text-3xl mt-8 p-6 text-center border-4 rounded-2xl border-dotted border-black bg-gray-light"
+        >
           57574HGHGKNSOET145MVOF
-        </p>
-        <div className="w-[90vw] border-b-2 border-divider pb-14 flex items-center justify-center font-semibold flex-col text-3xl gap-6 mt-12">
+        </motion.p>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          custom={2}
+          variants={fadeInVariants}
+          className="w-[90vw] border-b-2 border-divider pb-14 flex items-center justify-center font-semibold flex-col text-3xl gap-6 mt-12"
+        >
           <button className="bg-blue-text flex items-center justify-center gap-4 w-full p-6 rounded-full text-white">
             <Image src={duplicate} alt="" className="w-6" />
             <p>Copiar código</p>
@@ -53,13 +85,26 @@ const SuccessPage = () => {
             <span>Acessar vouchers resgatados</span>
             <Image src={arrow} alt="" className="w-8" />
           </button>
-        </div>
+        </motion.div>
       </section>
       <section className="px-10">
-        <h2 className="text-4xl font-bold mb-10">Resumo</h2>
-        <div>
+        <motion.h2
+          initial="hidden"
+          animate="visible"
+          custom={3}
+          variants={fadeInVariants}
+          className="text-4xl font-bold mb-10"
+        >
+          Resumo
+        </motion.h2>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          custom={4}
+          variants={fadeInVariants}
+        >
           <InfoCard items={cardItems} />
-        </div>
+        </motion.div>
       </section>
     </div>
   );

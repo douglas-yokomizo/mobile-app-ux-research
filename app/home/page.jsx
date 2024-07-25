@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import FooterNavigationHome from "../components/FooterNavigation";
 import * as homeAssets from "../assets/homePage";
 import Badge from "../components/Badge";
@@ -26,10 +27,26 @@ export default function Home() {
 
   const maxHeight = isExpanded ? `${contentRef.current.scrollHeight}px` : "0px";
 
+  const fadeInVariants = {
+    hidden: { opacity: 0 },
+    visible: (i) => ({
+      opacity: 1,
+      transition: {
+        delay: i * 0.2, // Delay based on the index
+      },
+    }),
+  };
+
   return (
     <>
       <main className="flex flex-col w-full">
-        <section className="bg-blue-dark relative w-full text-white p-16 pb-60 flex flex-col gap-12">
+        <motion.section
+          className="bg-blue-dark relative w-full text-white p-16 pb-60 flex flex-col gap-12"
+          initial="hidden"
+          animate="visible"
+          custom={0}
+          variants={fadeInVariants}
+        >
           <header className="flex justify-between items-center">
             <div className="flex items-center gap-6">
               <Image
@@ -64,7 +81,13 @@ export default function Home() {
           </header>
           <nav>
             <ul className="flex gap-10 font-bold text-2xl">
-              <li className="max-w-fit w-full text-center">
+              <motion.li
+                className="max-w-fit w-full text-center"
+                initial="hidden"
+                animate="visible"
+                custom={1}
+                variants={fadeInVariants}
+              >
                 <div className="bg-blue-50 rounded-full mb-4 w-36 h-36 flex items-center justify-center">
                   <Image
                     src={homeAssets.handHeart}
@@ -77,8 +100,14 @@ export default function Home() {
                   Vida <br />
                   Individual
                 </p>
-              </li>
-              <li className="max-w-fit w-full text-center">
+              </motion.li>
+              <motion.li
+                className="max-w-fit w-full text-center"
+                initial="hidden"
+                animate="visible"
+                custom={2}
+                variants={fadeInVariants}
+              >
                 <div className="bg-blue-900 rounded-full mb-4 w-36 h-36 flex items-center justify-center">
                   <Image
                     src={homeAssets.globe}
@@ -90,13 +119,25 @@ export default function Home() {
                 <p>
                   Vida <br /> Empresarial
                 </p>
-              </li>
+              </motion.li>
             </ul>
           </nav>
-        </section>
-        <section className="pl-12 transform -translate-y-40">
+        </motion.section>
+        <motion.section
+          className="pl-12 transform -translate-y-40"
+          initial="hidden"
+          animate="visible"
+          custom={3}
+          variants={fadeInVariants}
+        >
           <ul className="flex gap-4 overflow-hidden">
-            <li className="flex-shrink-0 w-[89vw] rounded-2xl bg-blue-50 text-black p-8">
+            <motion.li
+              className="flex-shrink-0 w-[89vw] rounded-2xl bg-blue-50 text-black p-8"
+              initial="hidden"
+              animate="visible"
+              custom={4}
+              variants={fadeInVariants}
+            >
               <div className="flex items-center justify-between font-bold">
                 <h2 className="text-5xl">Apólice do Carlos</h2>
                 <span className="text-3xl bg-green-100 text-green-950 px-4 py-3 border-2 border-green-950 rounded-md">
@@ -116,8 +157,14 @@ export default function Home() {
               <Link href={"/"} className="font-bold text-blue-500">
                 Detalhes da apólice
               </Link>
-            </li>
-            <li className="flex-shrink-0 w-[95vw] rounded-2xl bg-blue-50 text-black p-8">
+            </motion.li>
+            <motion.li
+              className="flex-shrink-0 w-[95vw] rounded-2xl bg-blue-50 text-black p-8"
+              initial="hidden"
+              animate="visible"
+              custom={5}
+              variants={fadeInVariants}
+            >
               <div className="flex items-center justify-between font-bold">
                 <h2 className="text-5xl">Apólice da Maria</h2>
                 <span className="text-3xl bg-red-100 text-red-950 px-4 py-3 border-2 border-red-950 rounded-md">
@@ -137,15 +184,28 @@ export default function Home() {
               <Link href={"/"} className="font-bold text-blue-500">
                 Detalhes da apólice
               </Link>
-            </li>
+            </motion.li>
           </ul>
-        </section>
-        <section ref={sliderRef} className="pl-12 -mt-16 flex-col">
+        </motion.section>
+        <motion.section
+          ref={sliderRef}
+          className="pl-12 -mt-16 flex-col"
+          initial="hidden"
+          animate="visible"
+          custom={6}
+          variants={fadeInVariants}
+        >
           <h2 className="mt-0 font-bold text-5xl mb-6">Acesso Rápido</h2>
           <ul className="font-semibold keen-slider">
-            <li className="keen-slider__slide">
+            <motion.li
+              className="keen-slider__slide"
+              initial="hidden"
+              animate="visible"
+              custom={7}
+              variants={fadeInVariants}
+            >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.guardian}
                     alt="shield and sword icon"
@@ -155,10 +215,16 @@ export default function Home() {
                 </div>
                 <p>Guardião</p>
               </div>
-            </li>
-            <li className="keen-slider__slide">
+            </motion.li>
+            <motion.li
+              className="keen-slider__slide"
+              initial="hidden"
+              animate="visible"
+              custom={8}
+              variants={fadeInVariants}
+            >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.coin}
                     alt="shield and sword icon"
@@ -168,10 +234,16 @@ export default function Home() {
                 </div>
                 <p>Pagamento</p>
               </div>
-            </li>
-            <li className=" keen-slider__slide">
+            </motion.li>
+            <motion.li
+              className="keen-slider__slide"
+              initial="hidden"
+              animate="visible"
+              custom={9}
+              variants={fadeInVariants}
+            >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.phoneStatus}
                     alt="shield and sword icon"
@@ -181,10 +253,16 @@ export default function Home() {
                 </div>
                 <p>Atendimento</p>
               </div>
-            </li>
-            <li className=" keen-slider__slide">
+            </motion.li>
+            <motion.li
+              className="keen-slider__slide"
+              initial="hidden"
+              animate="visible"
+              custom={10}
+              variants={fadeInVariants}
+            >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.shield}
                     alt="shield and sword icon"
@@ -194,15 +272,20 @@ export default function Home() {
                 </div>
                 <p>Acionar Seguro</p>
               </div>
-            </li>
-            <li className=" keen-slider__slide">
-              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+            </motion.li>
+            <motion.li
+              className="keen-slider__slide"
+              initial="hidden"
+              animate="visible"
+              custom={11}
+              variants={fadeInVariants}
+            >
               <div
                 className="text-center flex flex-col items-center justify-center max-w-fit"
                 onTouchEnd={() => router.push("/dados-cadastrais")}
                 onClick={() => router.push("/dados-cadastrais")}
               >
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.dataPerson}
                     alt="shield and sword icon"
@@ -216,10 +299,16 @@ export default function Home() {
                   cadastrais
                 </p>
               </div>
-            </li>
+            </motion.li>
           </ul>
-        </section>
-        <section className="pl-14 mt-20 mb-14">
+        </motion.section>
+        <motion.section
+          className="pl-14 mt-20 mb-14"
+          initial="hidden"
+          animate="visible"
+          custom={12}
+          variants={fadeInVariants}
+        >
           <div className="p-10 w-11/12 bg-blue-50 text-black rounded-lg shadow-lg">
             <div className="flex items-center justify-between">
               <Image
@@ -357,8 +446,14 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
-        <section className="pl-6 mb-14">
+        </motion.section>
+        <motion.section
+          className="pl-6 mb-14"
+          initial="hidden"
+          animate="visible"
+          custom={13}
+          variants={fadeInVariants}
+        >
           <ul className="flex overflow-hidden">
             <Image
               src={homeAssets.bannerHome}
@@ -371,16 +466,23 @@ export default function Home() {
               className="flex-shrink-0 w-[90vw] rounded-2xl bg-cover text-black p-8"
             />
           </ul>
-        </section>
-        <section
-          className="pl-14 pb-64 bg-[#F0EFF2]
-"
+        </motion.section>
+        <motion.section
+          className="pl-14 pb-64 bg-[#F0EFF2]"
+          initial="hidden"
+          animate="visible"
+          custom={14}
+          variants={fadeInVariants}
         >
-          <h3 className="text-5xl font-bold mt-20 mb-5">
-            Fale com seu corretor
-          </h3>
+          <h3 className="text-5xl font-bold mt-20 mb-5">Fale com seu corretor</h3>
           <div className="flex gap-4 overflow-hidden">
-            <div className="flex-shrink-0 w-[89vw] rounded-2xl bg-white text-black p-8">
+            <motion.div
+              className="flex-shrink-0 w-[89vw] rounded-2xl bg-white text-black p-8"
+              initial="hidden"
+              animate="visible"
+              custom={15}
+              variants={fadeInVariants}
+            >
               <div className="flex flex-col gap-6">
                 <h4 className="text-4xl mb-4">Túlio dos Santos</h4>
                 <p className="text-3xl">Corretora franqueada</p>
@@ -400,9 +502,7 @@ export default function Home() {
                   />
                 </div>
                 <button className="text-3xl font-semibold text-blue-600 flex items-center gap-4">
-                  <div onClick={() => router.push("/brokers")}>
-                    Mais detalhes
-                  </div>
+                  <div onClick={() => router.push("/brokers")}>Mais detalhes</div>
                   <Image
                     src={homeAssets.arrow}
                     alt="arrow icon"
@@ -410,27 +510,41 @@ export default function Home() {
                   />
                 </button>
               </div>
-            </div>
-            <div className="flex-shrink-0 w-[89vw] rounded-2xl bg-white text-black p-8">
+            </motion.div>
+            <motion.div
+              className="flex-shrink-0 w-[89vw] rounded-2xl bg-white text-black p-8"
+              initial="hidden"
+              animate="visible"
+              custom={16}
+              variants={fadeInVariants}
+            >
               <h4 className="text-4xl">Túlio dos Santos</h4>
               <p className="text-3xl">Corretora franqueada</p>
               <p className="text-3xl">AC corretores de saúde LTDA</p>
-            </div>
+            </motion.div>
           </div>
-          <h3 className="text-5xl font-bold mt-10 mb-5">
-            Fale com a Prudential
-          </h3>
-          <div className="w-[89vw] text-3xl rounded-2xl bg-white text-black p-8">
-            <p>
-              Estamos aqui para oferecer o melhor atendimento e assistência
-              possível.
-            </p>
+          <h3 className="text-5xl font-bold mt-10 mb-5">Fale com a Prudential</h3>
+          <motion.div
+            className="w-[89vw] text-3xl rounded-2xl bg-white text-black p-8"
+            initial="hidden"
+            animate="visible"
+            custom={17}
+            variants={fadeInVariants}
+          >
+            <p>Estamos aqui para oferecer o melhor atendimento e assistência possível.</p>
             <button className="text-blue-600 border-2 font-semibold w-full p-4 mt-10 rounded-full border-blue-600">
               Acessar atendimento
             </button>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
+        <motion.div
+           initial="hidden"
+            animate="visible"
+            custom={15}
+            variants={fadeInVariants}
+          >
         <FooterNavigationHome />
+        </motion.div>
       </main>
     </>
   );
