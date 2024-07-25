@@ -6,8 +6,14 @@ import Image from "next/image";
 import editIcon from "./edit-icon.svg";
 import emailIcon from "./email-icon.svg";
 import ellipsisIcon from "./ellipsis-icon.svg";
-import addIcon from "./add-icon.svg";
+import addIcon from "../../assets/add-icon.svg";
+import { DrawerComponent } from "@/app/components/Drawer";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 export default function Contatos() {
+	const router = useRouter();
+	const pathname = usePathname();
+
 	return (
 		<div className="h-screen bg-[#EEF5FF]">
 			<HeaderNavigation title={"Contatos"} />
@@ -110,10 +116,50 @@ export default function Contatos() {
 										/>
 									</div>
 								</div>
-								<div className="flex justify-center p-6 gap-2 items-center border border-blue-400 rounded-full text-2xl text-[#226CF2] font-bold cursor-pointer">
-									<Image src={addIcon} height={30} width={30} />
-									<p>Adicionar e-mail</p>
-								</div>
+								<DrawerComponent text="Adicionar e-mail">
+									<div className="flex justify-center">
+										<form className="flex flex-col w-full gap-14">
+											<fieldset className="flex relative w-full">
+												<input
+													type="text"
+													className="appearance-none w-full h-28 rounded-2xl px-5 peer border text-3xl"
+													value={"joaoferreira2010@gmail.com"}
+													required
+												/>
+												<label
+													for=""
+													className="absolute px-5 text-[#5E5E63] peer-focus:text-black peer-valid:text-black peer-focus:-top-[14px] peer-valid:-top-[14px] peer-focus:transition-all bg-white text-2xl rounded-full"
+												>
+													E-mail
+												</label>
+											</fieldset>
+											<div className="space-x-6 flex items-center">
+												<input
+													name="confirm"
+													id="confirm"
+													type="checkbox"
+													className=" w-7 h-7 rounded-full border border-black"
+												/>
+												<label htmlFor="confirm" className="text-3xl">
+													Definir como e-mail principal
+												</label>
+											</div>
+											<button
+												className="w-full bg-[#226CF2] p-6 rounded-full text-white text-3xl"
+												type="button"
+												onClick={() => router.push(`${pathname}/token`)}
+											>
+												Salvar
+											</button>
+											<button
+												className="w-full  p-6 rounded-full text-[#226CF2] text-3xl"
+												type="button"
+											>
+												Cancelar
+											</button>
+										</form>
+									</div>
+								</DrawerComponent>
 							</div>
 						</div>
 					</div>
