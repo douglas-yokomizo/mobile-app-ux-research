@@ -42,16 +42,18 @@ export default function DadosCadastrais() {
 							</Link>
 						</li>
 						<li>
-							<div className="flex items-center text-[2.6rem] font-bold py-6 ">
-								<p>Endereços</p>
-								<Image
-									src={arrow}
-									width={40}
-									height={40}
-									className="mr-12 fixed right-0"
-								/>
-							</div>
-							<div className="border-b-2 border-gray-300 my-5" />
+							<Link href={"/enderecos"}>
+								<div className="flex items-center text-[2.6rem] font-bold py-6 ">
+									<p>Endereços</p>
+									<Image
+										src={arrow}
+										width={40}
+										height={40}
+										className="mr-12 fixed right-0"
+									/>
+								</div>
+								<div className="border-b-2 border-gray-300 my-5" />
+							</Link>
 						</li>
 						<li>
 							<div className="flex items-center font-bold py-6  ">
