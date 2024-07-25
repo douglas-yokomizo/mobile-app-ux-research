@@ -1,6 +1,6 @@
 "use client";
 import HeaderNavigation from "@/app/components/HeaderNavigation";
-import infoIcon from "./info-icon.svg";
+import infoIcon from "@/app/assets/info-icon.svg";
 import contactsIcon from "./contacts-icon.svg";
 import Image from "next/image";
 import editIcon from "./edit-icon.svg";
@@ -10,6 +10,8 @@ import addIcon from "../../assets/add-icon.svg";
 import { DrawerComponent } from "@/app/components/Drawer";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { Input } from "@/app/components/Input";
+import { Button } from "@/app/components/Button";
 export default function Contatos() {
 	const router = useRouter();
 	const pathname = usePathname();
@@ -119,20 +121,11 @@ export default function Contatos() {
 								<DrawerComponent text="Adicionar e-mail">
 									<div className="flex justify-center">
 										<form className="flex flex-col w-full gap-14">
-											<fieldset className="flex relative w-full">
-												<input
-													type="text"
-													className="appearance-none w-full h-28 rounded-2xl px-5 peer border text-3xl"
-													value={"joaoferreira2010@gmail.com"}
-													required
-												/>
-												<label
-													for=""
-													className="absolute px-5 text-[#5E5E63] peer-focus:text-black peer-valid:text-black peer-focus:-top-[14px] peer-valid:-top-[14px] peer-focus:transition-all bg-white text-2xl rounded-full"
-												>
-													E-mail
-												</label>
-											</fieldset>
+											<Input
+												label={"E-mail"}
+												value={"joao@gmail.com"}
+												disabled
+											/>
 											<div className="space-x-6 flex items-center">
 												<input
 													name="confirm"
@@ -144,19 +137,11 @@ export default function Contatos() {
 													Definir como e-mail principal
 												</label>
 											</div>
-											<button
-												className="w-full bg-[#226CF2] p-6 rounded-full text-white text-3xl"
-												type="button"
+											<Button
+												text={"Salvar"}
 												onClick={() => router.push(`${pathname}/token`)}
-											>
-												Salvar
-											</button>
-											<button
-												className="w-full  p-6 rounded-full text-[#226CF2] text-3xl"
-												type="button"
-											>
-												Cancelar
-											</button>
+											/>
+											<Button text={"Cancelar"} variant="secondary" />
 										</form>
 									</div>
 								</DrawerComponent>
