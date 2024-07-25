@@ -1,9 +1,8 @@
 "use client";
 import Image from "next/image";
-import infoBalloon from "../assets/success/infoBalloon.svg";
 import { useRouter } from "next/navigation";
 
-const SuccessMessage = () => {
+const SuccessMessage = ({ title, image }) => {
   const route = useRouter();
 
   return (
@@ -13,8 +12,8 @@ const SuccessMessage = () => {
       </div>
       <div className="px-10">
         <div className="flex items-center justify-between border-b-2 border-divider p-10 gap-8">
-          <Image src={infoBalloon} alt="info icon" className="w-36" />
-          <h1 className="text-6xl font-bold">Voucher resgatado com sucesso!</h1>
+          <Image src={image} alt="info icon" className="w-40" />
+          <h1 className="text-6xl font-bold">{title}</h1>
         </div>
       </div>
     </>

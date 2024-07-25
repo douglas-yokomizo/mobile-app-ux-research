@@ -8,6 +8,11 @@ import Badge from "../components/Badge";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { useRouter } from "next/navigation";
+import dados from "../data/extratoDetails";
+
+const checkForLatePayments = () => {
+  return dados.some((item) => item.status === "Em Atraso");
+};
 
 export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -19,6 +24,7 @@ export default function Home() {
       perView: 3,
     },
   });
+  const hasLatePayments = checkForLatePayments();
 
   const toggleDetails = () => {
     setIsExpanded(!isExpanded);
@@ -62,6 +68,34 @@ export default function Home() {
               </span>
             </div>
           </header>
+          {hasLatePayments && (
+            <div className=" relative bg-yellow-caution rounded-3xl text-black text-3xl p-10">
+              <div className="flex">
+                <Image
+                  src={homeAssets.caution}
+                  alt="caution icon"
+                  width={32}
+                  height={32}
+                  className="transform -translate-x-3 -translate-y-10"
+                />
+                <p className="w-[70%]">
+                  Identificamos um pagamento em atraso, acesse para obter
+                  informações.
+                </p>
+              </div>
+              <span className="absolute top-8 right-8 text-6xl font-light">
+                X
+              </span>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => router.push("/pagamento/pagamento-detalhes")}
+                  className="uppercase pt-8 font-bold"
+                >
+                  Acessar notificação
+                </button>
+              </div>
+            </div>
+          )}
           <nav>
             <ul className="flex gap-10 font-bold text-2xl">
               <li className="max-w-fit w-full text-center">
@@ -156,7 +190,10 @@ export default function Home() {
                 <p>Guardião</p>
               </div>
             </li>
-            <li className="keen-slider__slide">
+            <li
+              onClick={() => router.push("/pagamento")}
+              className="keen-slider__slide hover:cursor-pointer"
+            >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
                 <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
                   <Image
@@ -202,7 +239,7 @@ export default function Home() {
                 onTouchEnd={() => router.push("/dados-cadastrais")}
                 onClick={() => router.push("/dados-cadastrais")}
               >
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-200 hover:cursor-pointer border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.dataPerson}
                     alt="shield and sword icon"
@@ -382,7 +419,7 @@ export default function Home() {
           <div className="flex gap-4 overflow-hidden">
             <div className="flex-shrink-0 w-[89vw] rounded-2xl bg-white text-black p-8">
               <div className="flex flex-col gap-6">
-                <h4 className="text-4xl mb-4">Túlio dos Santos</h4>
+                <h4 className="text-4xl font-bold mb-4">Túlio dos Santos</h4>
                 <p className="text-3xl">Corretora franqueada</p>
                 <p className="text-3xl">AC corretores de saúde LTDA</p>
               </div>

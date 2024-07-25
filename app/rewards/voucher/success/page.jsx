@@ -3,6 +3,7 @@ import SuccessMessage from "@/app/components/SuccessMessage";
 import duplicate from "@/app/assets/success/duplicate.svg";
 import { arrow, gold } from "@/app/assets/homePage";
 import InfoCard from "@/app/components/InfoCard";
+import infoBalloon from "@/app/assets/success/infoBalloon.svg";
 import Badge from "@/app/components/Badge";
 
 const SuccessPage = () => {
@@ -38,7 +39,10 @@ const SuccessPage = () => {
 
   return (
     <div>
-      <SuccessMessage />
+      <SuccessMessage
+        title={"Voucher resgatado com sucesso!"}
+        image={infoBalloon}
+      />
       <section className="p-10">
         <h2 className="font-bold text-4xl mt-5">Código do voucher</h2>
         <p className="text-3xl mt-8 p-6 text-center border-4 rounded-2xl border-dotted border-black bg-gray-light">
