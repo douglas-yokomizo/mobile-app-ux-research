@@ -232,7 +232,10 @@ export default function Home() {
                 <p>Beneficiários</p>
               </div>
             </li>
-            <li className=" keen-slider__slide">
+            <li
+              className=" keen-slider__slide"
+              onClick={() => router.push("/insurance-coverages")}
+            >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
                 <div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
                   <Image
