@@ -22,12 +22,12 @@ export default function Enderecos() {
 					value={"Apartamento 1023, Bloco B"}
 					disabled
 				/>
-				<Input label={"Bairro"} value={"02961-100"} />
-				<Input label={"Cidade"} value={"02961-100"} />
-				<Input label={"Estado"} value={"02961-100"} />
+				<Input label={"Bairro"} value={"Jardim Monjolo"} disabled />
+				<Input label={"Cidade"} value={"São Paulo"} disabled />
+				<Input label={"Estado"} value={"SP"} disabled />
 				<Button
 					text={"Salvar"}
-					onClick={() => router.push("/revisão?tab=enderecos")}
+					onClick={() => router.push("/revisao?tab=enderecos")}
 				/>
 				<Button text={"Cancelar"} variant="secondary" />
 			</div>

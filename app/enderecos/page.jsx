@@ -68,7 +68,7 @@ export default function Enderecos() {
 								href={"/enderecos/adicionar"}
 							>
 								<Image src={addIcon} height={30} width={30} />
-								<p>Adicionar telefone</p>
+								<p>Adicionar endereço</p>
 							</Link>
 						</div>
 					</div>

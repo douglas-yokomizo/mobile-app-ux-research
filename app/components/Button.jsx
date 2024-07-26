@@ -9,7 +9,7 @@ export function Button({ variant = "primary", text, ...props }) {
 		</button>
 	) : (
 		<button
-			className="w-full p-6 rounded-full text-[#226CF2] text-3xl"
+			className="w-full p-6 rounded-full text-[#226CF2] text-3xl font-semibold"
 			type="button"
 			{...props}
 		>
