@@ -21,7 +21,7 @@ export default function Home() {
   const [sliderRef, instanceRef] = useKeenSlider({
     loop: true,
     slides: {
-      perView: 3,
+      perView: 3.7,
     },
   });
   const hasLatePayments = checkForLatePayments();
@@ -195,10 +195,10 @@ export default function Home() {
               className="keen-slider__slide hover:cursor-pointer"
             >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-white rounded-2xl  h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.coin}
-                    alt="shield and sword icon"
+                    alt="Coin icon"
                     height={48}
                     width={48}
                   />
@@ -208,10 +208,10 @@ export default function Home() {
             </li>
             <li className=" keen-slider__slide">
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.phoneStatus}
-                    alt="shield and sword icon"
+                    alt="Phone status icon"
                     height={48}
                     width={48}
                   />
@@ -221,10 +221,36 @@ export default function Home() {
             </li>
             <li className=" keen-slider__slide">
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
+                  <Image
+                    src={homeAssets.peopleGroup}
+                    alt="group of people icon"
+                    height={48}
+                    width={48}
+                  />
+                </div>
+                <p>Beneficiários</p>
+              </div>
+            </li>
+            <li className=" keen-slider__slide">
+              <div className="text-center flex flex-col items-center justify-center max-w-fit">
+                <div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
+                  <Image
+                    src={homeAssets.heartShield}
+                    alt="heart and shield icon"
+                    height={48}
+                    width={48}
+                  />
+                </div>
+                <p>Coberturas</p>
+              </div>
+            </li>
+            <li className=" keen-slider__slide">
+              <div className="text-center flex flex-col items-center justify-center max-w-fit">
+                <div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.shield}
-                    alt="shield and sword icon"
+                    alt="shield checked icon"
                     height={48}
                     width={48}
                   />
@@ -239,10 +265,10 @@ export default function Home() {
                 onTouchEnd={() => router.push("/dados-cadastrais")}
                 onClick={() => router.push("/dados-cadastrais")}
               >
-                <div className="bg-blue-200 hover:cursor-pointer border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-white hover:cursor-pointer rounded-2xl  h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.dataPerson}
-                    alt="shield and sword icon"
+                    alt="resume icon"
                     height={48}
                     width={48}
                   />
