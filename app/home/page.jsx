@@ -4,10 +4,27 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import FooterNavigationHome from "../components/FooterNavigation";
 import * as homeAssets from "../assets/homePage";
+import Badge from "../components/Badge";
+import "keen-slider/keen-slider.min.css";
+import { useKeenSlider } from "keen-slider/react";
+import { useRouter } from "next/navigation";
+import dados from "../data/extratoDetails";
+
+const checkForLatePayments = () => {
+	return dados.some((item) => item.status === "Em Atraso");
+};
 
 export default function Home() {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const contentRef = useRef(null);
+	const router = useRouter();
+	const [sliderRef, instanceRef] = useKeenSlider({
+		loop: true,
+		slides: {
+			perView: 3.7,
+		},
+	});
+	const hasLatePayments = checkForLatePayments();
 
 	const toggleDetails = () => {
 		setIsExpanded(!isExpanded);
@@ -51,6 +68,34 @@ export default function Home() {
 							</span>
 						</div>
 					</header>
+					{hasLatePayments && (
+						<div className=" relative bg-yellow-caution rounded-3xl text-black text-3xl p-10">
+							<div className="flex">
+								<Image
+									src={homeAssets.caution}
+									alt="caution icon"
+									width={32}
+									height={32}
+									className="transform -translate-x-3 -translate-y-10"
+								/>
+								<p className="w-[70%]">
+									Identificamos um pagamento em atraso, acesse para obter
+									informações.
+								</p>
+							</div>
+							<span className="absolute top-8 right-8 text-6xl font-light">
+								X
+							</span>
+							<div className="flex justify-end">
+								<button
+									onClick={() => router.push("/pagamento/pagamento-detalhes")}
+									className="uppercase pt-8 font-bold"
+								>
+									Acessar notificação
+								</button>
+							</div>
+						</div>
+					)}
 					<nav>
 						<ul className="flex gap-10 font-bold text-2xl">
 							<li className="max-w-fit w-full text-center">
@@ -129,52 +174,114 @@ export default function Home() {
 						</li>
 					</ul>
 				</section>
-				<section className="pl-14 -mt-16">
+				<section ref={sliderRef} className="pl-12 -mt-16 flex-col">
 					<h2 className="mt-0 font-bold text-5xl mb-6">Acesso Rápido</h2>
-					<ul className="font-semibold flex gap-8 overflow-hidden">
-						<li className="flex-shrink-0 w-1/4 text-center">
-							<div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl flex items-center justify-center h-32">
-								<Image
-									src={homeAssets.guardian}
-									alt="shield and sword icon"
-									height={48}
-									width={48}
-								/>
+					<ul className="font-semibold keen-slider">
+						<li className="keen-slider__slide">
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+									<Image
+										src={homeAssets.guardian}
+										alt="shield and sword icon"
+										height={48}
+										width={48}
+									/>
+								</div>
+								<p>Guardião</p>
 							</div>
-							<p>Guardião</p>
 						</li>
-						<li className="flex-shrink-0 w-1/4 text-center">
-							<div className="bg-blue-50 rounded-2xl flex items-center justify-center h-32">
-								<Image
-									src={homeAssets.coin}
-									alt="shield and sword icon"
-									height={48}
-									width={48}
-								/>
+						<li
+							onClick={() => router.push("/pagamento")}
+							className="keen-slider__slide hover:cursor-pointer"
+						>
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<div className="bg-blue-white rounded-2xl  h-32 w-[16rem] flex justify-center">
+									<Image
+										src={homeAssets.coin}
+										alt="Coin icon"
+										height={48}
+										width={48}
+									/>
+								</div>
+								<p>Pagamento</p>
 							</div>
-							<p>Pagamento</p>
 						</li>
-						<li className="flex-shrink-0 w-1/4 text-center">
-							<div className="bg-blue-50 rounded-2xl flex items-center justify-center h-32">
-								<Image
-									src={homeAssets.phoneStatus}
-									alt="shield and sword icon"
-									height={48}
-									width={48}
-								/>
+						<li className=" keen-slider__slide">
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
+									<Image
+										src={homeAssets.phoneStatus}
+										alt="Phone status icon"
+										height={48}
+										width={48}
+									/>
+								</div>
+								<p>Atendimento</p>
 							</div>
-							<p>Atendimento</p>
 						</li>
-						<li className="flex-shrink-0 w-1/4 text-center">
-							<div className="bg-blue-50 rounded-2xl flex items-center justify-center h-32">
-								<Image
-									src={homeAssets.shield}
-									alt="shield and sword icon"
-									height={48}
-									width={48}
-								/>
+						<li className=" keen-slider__slide">
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
+									<Image
+										src={homeAssets.peopleGroup}
+										alt="group of people icon"
+										height={48}
+										width={48}
+									/>
+								</div>
+								<p>Beneficiários</p>
 							</div>
-							<p>Acionar seguro </p>
+						</li>
+						<li
+							className=" keen-slider__slide"
+							onClick={() => router.push("/insurance-coverages")}
+						>
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
+									<Image
+										src={homeAssets.heartShield}
+										alt="heart and shield icon"
+										height={48}
+										width={48}
+									/>
+								</div>
+								<p>Coberturas</p>
+							</div>
+						</li>
+						<li className=" keen-slider__slide">
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
+									<Image
+										src={homeAssets.shield}
+										alt="shield checked icon"
+										height={48}
+										width={48}
+									/>
+								</div>
+								<p>Acionar Seguro</p>
+							</div>
+						</li>
+						<li className=" keen-slider__slide">
+							{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+							<div
+								className="text-center flex flex-col items-center justify-center max-w-fit"
+								onTouchEnd={() => router.push("/dados-cadastrais")}
+								onClick={() => router.push("/dados-cadastrais")}
+							>
+								<div className="bg-blue-white hover:cursor-pointer rounded-2xl  h-32 w-[16rem] flex justify-center">
+									<Image
+										src={homeAssets.dataPerson}
+										alt="resume icon"
+										height={48}
+										width={48}
+									/>
+								</div>
+								<p>
+									Dados
+									<br />
+									cadastrais
+								</p>
+							</div>
 						</li>
 					</ul>
 				</section>
@@ -200,31 +307,21 @@ export default function Home() {
 							Sincronizado em: 09:38:47 8 Abr 2024
 						</p>
 						<div className="flex gap-4 justify-between items-center">
-							<div className="flex w-1/2 items-center gap-2 bg-white p-3 py-4 rounded-full">
-								<Image
-									src={homeAssets.starterShield}
-									alt="begginer shield icon"
-									className="w-7"
-								/>
-								<p className="text-3xl">
-									Nível <strong className="font-bold">Iniciante</strong>
-								</p>
-							</div>
-							<div className="flex w-1/2 items-center gap-2 bg-white p-3 py-4 rounded-full">
-								<Image src={homeAssets.gold} alt="gold icon" className="w-7 " />
-								<p className="text-3xl">
-									Moedas <strong className="font-bold">1.000</strong>
-								</p>
-							</div>
-						</div>
-						<div>
-							<p className="mt-10 mb-4 text-3xl text-neutral-400 ">
-								Meu objetivo semanal
-							</p>
-							<Image
-								src={homeAssets.weekGoal}
-								alt="week goal image"
-								className="w-full bg-white p-4 rounded-2xl"
+							<Badge
+								src={homeAssets.starterShield}
+								alt={""}
+								bgColor={"bg-white"}
+								badgeTitle={"Nível"}
+								badgeValue={"Iniciante"}
+								className="w-1/2 rounded-full"
+							/>
+							<Badge
+								src={homeAssets.gold}
+								badgeTitle={"Moedas"}
+								badgeValue={"1000"}
+								bgColor={"bg-white"}
+								alt={""}
+								className="w-1/2 rounded-full"
 							/>
 						</div>
 						<div className="flex items-center mt-4 mb-8">
@@ -351,7 +448,7 @@ export default function Home() {
 					<div className="flex gap-4 overflow-hidden">
 						<div className="flex-shrink-0 w-[89vw] rounded-2xl bg-white text-black p-8">
 							<div className="flex flex-col gap-6">
-								<h4 className="text-4xl mb-4">Túlio dos Santos</h4>
+								<h4 className="text-4xl font-bold mb-4">Túlio dos Santos</h4>
 								<p className="text-3xl">Corretora franqueada</p>
 								<p className="text-3xl">AC corretores de saúde LTDA</p>
 							</div>
@@ -369,7 +466,9 @@ export default function Home() {
 									/>
 								</div>
 								<button className="text-3xl font-semibold text-blue-600 flex items-center gap-4">
-									<div>Mais detalhes</div>
+									<div onClick={() => router.push("/brokers")}>
+										Mais detalhes
+									</div>
 									<Image
 										src={homeAssets.arrow}
 										alt="arrow icon"

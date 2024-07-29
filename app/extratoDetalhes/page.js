@@ -26,8 +26,18 @@ export default function ExtratoDetalhes() {
 
 				{dados.map((item, index) => (
 					<section key={index} className="my-12">
-						<div className="border-green-dark border-2 bg-green-white rounded-lg w-min">
-							<p className="text-3xl p-2 text-green-dark font-semibold">
+						<div
+							className={` rounded-lg w-fit ${
+								item.status === "Pago"
+									? "border-green-dark border-2 bg-green-white"
+									: "border-2 border-red-base bg-red-error"
+							}`}
+						>
+							<p
+								className={`text-3xl p-2 font-semibold ${
+									item.status === "Pago" ? "text-green-dark" : "text-red-base"
+								}`}
+							>
 								{item.status}
 							</p>
 						</div>

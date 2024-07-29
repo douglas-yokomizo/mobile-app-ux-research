@@ -22,6 +22,10 @@ import regular from "./regular.svg";
 import bannerHome from "./bannerHome.png";
 import phone from "./phone.svg";
 import whatsapp from "./whatsapp.svg";
+import dataPerson from "./data-person.svg";
+import caution from "./caution.svg";
+import heartShield from "./heartShield.svg";
+import peopleGroup from "./peopleGroup.svg";
 
 export {
   alertIcon,
@@ -48,4 +52,8 @@ export {
   bannerHome,
   phone,
   whatsapp,
+  dataPerson,
+  caution,
+  heartShield,
+  peopleGroup,
 };
