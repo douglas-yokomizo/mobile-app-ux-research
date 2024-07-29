@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 import FooterNavigationHome from "../components/FooterNavigation";
 import * as homeAssets from "../assets/homePage";
 import Badge from "../components/Badge";
@@ -16,7 +16,7 @@ const checkForLatePayments = () => {
 
 export default function Home() {
 	const [isExpanded, setIsExpanded] = useState(false);
-	const [playerName, setPlayerName] = useState('');
+	const [playerName, setPlayerName] = useState("");
 	const contentRef = useRef(null);
 	const router = useRouter();
 	const [sliderRef, instanceRef] = useKeenSlider({
@@ -98,6 +98,7 @@ export default function Home() {
 								<button
 									onClick={() => router.push("/pagamento/pagamento-detalhes")}
 									className="uppercase pt-8 font-bold"
+									type="button"
 								>
 									Acessar notificação
 								</button>
@@ -200,6 +201,8 @@ export default function Home() {
 						</li>
 						<li
 							onClick={() => router.push("/pagamento")}
+							onKeyDown={() => router.push("/pagamento")}
+							onTouchEnd={() => router.push("/pagamento")}
 							className="keen-slider__slide hover:cursor-pointer"
 						>
 							<div className="text-center flex flex-col items-center justify-center max-w-fit">
@@ -243,6 +246,8 @@ export default function Home() {
 						<li
 							className=" keen-slider__slide"
 							onClick={() => router.push("/insurance-coverages")}
+							onKeyDown={() => router.push("/insurance-coverages")}
+							onTouchEnd={() => router.push("/insurance-coverages")}
 						>
 							<div className="text-center flex flex-col items-center justify-center max-w-fit">
 								<div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
@@ -301,11 +306,16 @@ export default function Home() {
 								alt="Logo Fully"
 								className="w-20"
 							/>
-							<button onClick={toggleDetails} className="flex p-4">
+							<button
+								onClick={toggleDetails}
+								className="flex p-4"
+								type="button"
+							>
 								<Image
 									src={homeAssets.arrow}
-									className={`transition-transform ${isExpanded ? "rotate-[270deg]" : "rotate-90"
-										} w-10 h-10 filter saturate-100 brightness-50`}
+									className={`transition-transform ${
+										isExpanded ? "rotate-[270deg]" : "rotate-90"
+									} w-10 h-10 filter saturate-100 brightness-50`}
 									alt="arrow icon"
 								/>
 							</button>
@@ -355,8 +365,9 @@ export default function Home() {
 						<div
 							ref={contentRef}
 							style={{ maxHeight: maxHeight }}
-							className={`transition-max-height duration-500 ease-in-out overflow-hidden ${isExpanded ? "max-h-96" : "max-h-0"
-								}`}
+							className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
+								isExpanded ? "max-h-96" : "max-h-0"
+							}`}
 						>
 							<div>
 								<p className="mt-10 mb-4 text-3xl text-neutral-400 ">
@@ -471,8 +482,15 @@ export default function Home() {
 										className="bg-blue-50 w-32 h-32 rounded-full p-8"
 									/>
 								</div>
-								<button className="text-3xl font-semibold text-blue-600 flex items-center gap-4">
-									<div onClick={() => router.push("/brokers")}>
+								<button
+									className="text-3xl font-semibold text-blue-600 flex items-center gap-4"
+									type="button"
+								>
+									<div
+										onClick={() => router.push("/brokers")}
+										onKeyDown={() => router.push("/brokers")}
+										onTouchEnd={() => router.push("/brokers")}
+									>
 										Mais detalhes
 									</div>
 									<Image
@@ -497,7 +515,10 @@ export default function Home() {
 							Estamos aqui para oferecer o melhor atendimento e assistência
 							possível.
 						</p>
-						<button className="text-blue-600 border-2 font-semibold w-full p-4 mt-10 rounded-full border-blue-600">
+						<button
+							className="text-blue-600 border-2 font-semibold w-full p-4 mt-10 rounded-full border-blue-600"
+							type="button"
+						>
 							Acessar atendimento
 						</button>
 					</div>
