@@ -1,19 +1,17 @@
-export function Button({ variant = "primary", text, ...props }) {
-	return variant === "primary" ? (
-		<button
-			className="w-full bg-[#226CF2] p-6 rounded-full text-white text-3xl"
-			type="button"
-			{...props}
-		>
-			{text}
-		</button>
-	) : (
-		<button
-			className={`w-full p-6 rounded-full text-[#226CF2] text-3xl font-semibold ${props.classNames}`}
-			type="button"
-			{...props}
-		>
-			{text}
-		</button>
-	);
+export function Button({ variant = "primary", text, onClick, ...props }) {
+  return (
+    <button
+      className={`w-full font-semibold p-6 rounded-full text-3xl transition-colors duration-5000 ${
+        variant === "disabled"
+          ? "bg-[#F0EFF2] text-[#B4B4BB]"
+          : "bg-[#226CF2] text-white"
+      }`}
+      type="button"
+      {...(variant === "disabled" ? { disabled: true } : {})}
+      {...props}
+      onClick={onClick}
+    >
+      {text}
+    </button>
+  );
 }

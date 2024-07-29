@@ -29,6 +29,8 @@ module.exports = {
         "red-error": "#F8DFE0",
         "yellow-caution": "#FDD200",
         "yellow-light": "#F7EAD3",
+        "orange-base": "#FF9901",
+        "purple-base": "#AE549C",
       },
     },
   },

@@ -4,9 +4,10 @@ const isReactComponent = (value) => {
   );
 };
 
-const InfoCard = ({ items }) => {
+const InfoCard = ({ items, title, bgColor = "bg-gray-light", ...props }) => {
   return (
-    <div className="card bg-gray-light shadow-lg rounded-lg px-8 py-1">
+    <div className={`card ${bgColor} shadow-lg rounded-lg px-8 py-4 ${props}`}>
+      {title && <h2 className="card-title text-4xl font-bold my-4">{title}</h2>}
       {items.map((item, index) => (
         <div key={index} className="item text-3xl my-10">
           <h4 className="text-gray-text mb-3">{item.title}</h4>
