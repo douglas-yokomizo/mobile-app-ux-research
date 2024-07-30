@@ -20,7 +20,7 @@ const BeneficiariesDetailsPage = () => {
     <>
       <HeaderNavigation title={"Detalhes"} />
       <Tabs titles={["Primários", "Secundários", "Terciários"]} />
-      <div className="px-16">
+      <div className="px-16 mt-14">
         <section className="text-3xl">
           <TitleWithIcon
             title={"Família"}

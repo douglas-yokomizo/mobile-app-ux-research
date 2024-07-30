@@ -15,17 +15,16 @@ const RewardsPage = () => {
   return (
     <main>
       <HeaderNavigation title={"Resgatar recompensas"} />
-      <Tabs titles={["Recompensas disponíveis", "Histórico de recompensas"]} />
+      <Tabs titles={["Meus vouchers", "Histórico de uso"]} />
       <TitleWithIcon
         title="Vouchers disponíveis"
         iconSrc={rewardsAssets.medal}
         iconAlt={"Medal icon"}
-        iconWidth={50}
-        iconHeight={50}
-        className="flex px-5 text-6xl font-bold"
+        iconHeight={60}
+        className="flex items-center px-10 py-5 text-6xl font-bold"
       />
-      <div className="container pl-8">
-        <p className="text-3xl my-10">
+      <div className="container pl-12">
+        <p className="text-3xl mt-4 mb-10">
           Troque suas moedas para resgatar vouchers de nossos parceiros abaixo
         </p>
         <Badge

@@ -79,7 +79,7 @@ export default function Menu() {
           <div className="border-b-2 border-gray-300 my-5"></div>
 
           <li>
-            <Link href="/">
+            <Link href="/policies">
               <div className="flex items-center text-3xl p-1">
                 <Image
                   src={apolices}

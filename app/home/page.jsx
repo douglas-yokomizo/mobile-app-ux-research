@@ -147,8 +147,12 @@ export default function Home() {
                   <p>10/10/2023 à 10/10/2028</p>
                 </div>
               </div>
-              <Link href={"/"} className="font-bold text-blue-500">
-                Detalhes da apólice
+              <Link
+                href={"/policies"}
+                className="font-bold text-blue-text flex items-center text-3xl gap-2"
+              >
+                Detalhes da apólice{" "}
+                <Image src={homeAssets.arrow} alt="arrow icon" height={30} />
               </Link>
             </li>
             <li className="flex-shrink-0 w-[95vw] rounded-2xl bg-blue-50 text-black p-8">
@@ -219,7 +223,10 @@ export default function Home() {
                 <p>Atendimento</p>
               </div>
             </li>
-            <li className=" keen-slider__slide">
+            <li
+              className="hover:cursor-pointer keen-slider__slide"
+              onClick={() => router.push("/beneficiaries")}
+            >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
                 <div className="bg-blue-white  rounded-2xl  h-32 w-[16rem] flex justify-center">
                   <Image
@@ -324,7 +331,7 @@ export default function Home() {
                 className="w-1/2 rounded-full"
               />
             </div>
-            <div className="flex items-center mt-4 mb-8">
+            <div className="flex items-center my-12">
               <strong className="font-bold text-4xl mr-4">2 de 3</strong>
               <Image
                 src={homeAssets.progressBar}

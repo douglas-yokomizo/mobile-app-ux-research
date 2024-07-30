@@ -4,12 +4,34 @@ const isReactComponent = (value) => {
   );
 };
 
-const InfoCard = ({ items, title, bgColor = "bg-gray-light", ...props }) => {
+const InfoCard = ({
+  items,
+  title,
+  icon,
+  status,
+  bgColor = "bg-gray-light",
+  className,
+  ...props
+}) => {
   return (
     <div className={`card ${bgColor} shadow-lg rounded-lg px-8 py-4 ${props}`}>
-      {title && <h2 className="card-title text-4xl font-bold my-4">{title}</h2>}
+      {title && (
+        <div className="flex justify-between items-center my-4">
+          <div className="flex">
+            {isReactComponent(icon) && (
+              <span className="icon mr-2">{icon}</span>
+            )}
+            <h2 className="text-4xl font-bold">{title}</h2>
+          </div>
+          {isReactComponent(status) && (
+            <span className="text-3xl rounded-lg border-2 bg-green-light text-green-dark border-green-dark py-2 px-4 font-bold">
+              {status}
+            </span>
+          )}
+        </div>
+      )}
       {items.map((item, index) => (
-        <div key={index} className="item text-3xl my-10">
+        <div key={index} className="text-3xl my-10">
           <h4 className="text-gray-text mb-3">{item.title}</h4>
           <p className="">
             {isReactComponent(item.value) ? (
