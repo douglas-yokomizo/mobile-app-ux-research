@@ -180,7 +180,7 @@ export default function Home() {
         </section>
         <section ref={sliderRef} className="pl-12 -mt-16 flex-col">
           <h2 className="mt-0 font-bold text-5xl mb-6">Acesso Rápido</h2>
-          <ul className="font-semibold keen-slider">
+          <ul className="font-semibold keen-slider text-2xl">
             <li className="keen-slider__slide">
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
                 <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
