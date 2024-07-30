@@ -32,7 +32,7 @@ export default function FooterNavigationHome() {
             <li
               className={`text-center items-center list-none text-3xl flex flex-col gap-1`}
             >
-              <Link href="/coberturas">
+              <Link href="/insurance-coverages">
                 <div className="flex flex-col items-center cursor-pointer">
                   <Image
                     src={coberturasIcon}
