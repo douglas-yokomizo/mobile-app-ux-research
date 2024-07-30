@@ -310,8 +310,9 @@ export default function Home() {
                 />
               </button>
             </div>
-            <p className="mt-4 mb-8 text-3xl text-neutral-400 ">
-              Sincronizado em: 09:38:47 8 Abr 2024
+            <p className="mt-4 mb-8 text-3xl text-neutral-400 flex items-center justify-between">
+              Sincronizado em: 09:38:47 8 Abr 2024{" "}
+              <Image src={homeAssets.info} alt="info icon" height={30} />
             </p>
             <div className="flex gap-4 justify-between items-center">
               <Badge

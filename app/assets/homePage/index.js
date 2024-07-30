@@ -26,6 +26,7 @@ import dataPerson from "./data-person.svg";
 import caution from "./caution.svg";
 import heartShield from "./heartShield.svg";
 import peopleGroup from "./peopleGroup.svg";
+import info from "./info.svg";
 
 export {
   alertIcon,
@@ -56,4 +57,5 @@ export {
   caution,
   heartShield,
   peopleGroup,
+  info,
 };
