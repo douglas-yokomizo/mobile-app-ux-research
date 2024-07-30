@@ -1,3 +1,5 @@
+import { Button } from "@/app/components/Button";
+
 const isReactComponent = (value) => {
   return (
     value && value.$$typeof && value.$$typeof === Symbol.for("react.element")
@@ -11,6 +13,10 @@ const InfoCard = ({
   status,
   bgColor = "bg-gray-light",
   className,
+  showButton = false,
+  buttonText = "",
+  buttonIcon,
+  buttonClassName = "", // Adicione esta linha
   ...props
 }) => {
   return (
@@ -42,6 +48,16 @@ const InfoCard = ({
           </p>
         </div>
       ))}
+      {showButton && (
+        <div className="mt-4">
+          <Button
+            text={buttonText}
+            icon={buttonIcon}
+            className={buttonClassName}
+            iconSize={30}
+          />
+        </div>
+      )}
     </div>
   );
 };

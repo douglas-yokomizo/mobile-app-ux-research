@@ -240,7 +240,7 @@ export default function Home() {
               </div>
             </li>
             <li
-              className=" keen-slider__slide"
+              className=" keen-slider__slide hover:cursor-pointer"
               onClick={() => router.push("/insurance-coverages")}
             >
               <div className="text-center flex flex-col items-center justify-center max-w-fit">

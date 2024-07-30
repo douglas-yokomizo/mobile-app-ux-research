@@ -13,7 +13,7 @@ const CoveragesPage = () => {
       <HeaderNavigation title={"Coberturas"} />
       <div className="bg-blue-white">
         {coverages.map((coverage, index) => (
-          <div key={coverage.id} className="">
+          <div key={coverage.id}>
             <div className="bg-[#F5F9FF] p-12 mb-2 flex flex-col gap-4">
               <h2 className="text-4xl font-bold">{coverage.name}</h2>
               <p className="text-3xl text-blue-bold font-bold hover:cursor-pointer">

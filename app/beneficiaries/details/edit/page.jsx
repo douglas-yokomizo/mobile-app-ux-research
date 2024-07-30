@@ -66,8 +66,10 @@ export default function Enderecos() {
           text={"Continuar"}
           variant={buttonVariant}
           onClick={openModal}
+          className="text-white"
         />
         <Button
+          onClick={() => router.back()}
           text={"Cancelar"}
           className="bg-transparent text-blue-text font-semibold text-3xl pt-8 pb-16"
         />
