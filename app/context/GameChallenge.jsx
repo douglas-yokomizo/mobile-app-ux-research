@@ -39,6 +39,36 @@ export function GameContextProvider({ children }) {
 		localStorage.setItem("challenge", challenge);
 	}
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		if (session) {
+			const channel = supabase
+				.channel("public:session")
+				.on(
+					"postgres_changes",
+					{
+						event: "*",
+						schema: "public",
+						table: "sessions",
+					},
+					({ new: session }) => {
+						if (session.winner !== player.id) {
+							localStorage.clear();
+							setChallenge("");
+							setPlayer({});
+							setSession(null);
+							return router.replace("/");
+						}
+					},
+				)
+				.subscribe();
+
+			return () => {
+				supabase.removeChannel(channel);
+			};
+		}
+	}, []);
+
 	function setGameSession(session) {
 		setSession(session);
 		localStorage.setItem("session", JSON.stringify(session));
