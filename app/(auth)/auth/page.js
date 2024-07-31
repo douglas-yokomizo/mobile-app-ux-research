@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
+import { useGame } from "@/app/hooks/useGame";
 
 export default function Auth() {
 	const [message, setMessage] = useState("");
-	const [session, setSession] = useState(null);
+	const { setGameSession, session, setGamePlayer, player } = useGame();
 	const [pin, setPin] = useState("");
 	const [player1Name, setPlayer1Name] = useState("");
 	const [player2Name, setPlayer2Name] = useState("");
@@ -14,6 +15,7 @@ export default function Auth() {
 	const [countdown, setCountdown] = useState(null);
 	const router = useRouter();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const subscription = supabase
 			.channel("realtime:sessions")
@@ -29,11 +31,12 @@ export default function Auth() {
 								? "Ambos jogadores estão conectados!"
 								: "Esperando pelo outro jogador...",
 						);
-						setSession(newSession);
+						setGameSession(newSession);
 						await fetchPlayerNames(newSession);
 
 						if (newSession.game_started) {
 							setGameStarted(true);
+
 							calculateCountdown(newSession.countdown_start_time);
 						}
 					}
@@ -94,7 +97,7 @@ export default function Auth() {
 			if (timeLeft === 0) {
 				clearInterval(interval);
 				setMessage("Jogo iniciado!");
-				return router.push("/home");
+				return router.push("/home?player=1");
 			}
 		}, 1000);
 	};
@@ -110,6 +113,7 @@ export default function Auth() {
 			setMessage("PIN inválido, tente de novo.");
 			return;
 		}
+		setGamePlayer(user);
 
 		setMessage(`Welcome, ${user.name}!`);
 		const { data: existingSession, error: existingSessionError } =
@@ -129,8 +133,6 @@ export default function Auth() {
 			if (newSessionError) {
 				return setMessage("Erro ao criar a sessão.");
 			}
-
-			localStorage.setItem("name", user.name);
 		} else {
 			const { data: updatedSession, error: updateSessionError } = await supabase
 				.from("sessions")
@@ -142,9 +144,7 @@ export default function Auth() {
 				return setMessage("Erro ao entrar na sessão.");
 			}
 
-			setSession(updatedSession);
-
-			localStorage.setItem("name", user.name);
+			setGameSession(updatedSession);
 		}
 	}
 

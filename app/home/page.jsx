@@ -9,6 +9,7 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { useRouter } from "next/navigation";
 import dados from "../data/extratoDetails";
+import { useGame } from "../hooks/useGame";
 
 const checkForLatePayments = () => {
 	return dados.some((item) => item.status === "Em Atraso");
@@ -32,6 +33,7 @@ export default function Home() {
 	};
 
 	const maxHeight = isExpanded ? `${contentRef.current.scrollHeight}px` : "0px";
+	const { challenge, player } = useGame();
 
 	return (
 		<>
@@ -46,7 +48,7 @@ export default function Home() {
 								width={120}
 							/>
 							<div className="font-bold">
-								<h2 className="text-4xl mb-4">Olá, João Pedro</h2>
+								<h2 className="text-4xl mb-4">Olá, {player.name}</h2>
 								<h3 className="text-2xl flex items-center gap-2">
 									Meu perfil{" "}
 									<Image
@@ -69,7 +71,7 @@ export default function Home() {
 							</span>
 						</div>
 					</header>
-					{hasLatePayments && (
+					{hasLatePayments && challenge !== "Pagamento em atraso" && (
 						<div className=" relative bg-yellow-caution rounded-3xl text-black text-3xl p-10">
 							<div className="flex">
 								<Image
@@ -184,7 +186,7 @@ export default function Home() {
 					<ul className="font-semibold keen-slider text-2xl">
 						<li className="keen-slider__slide">
 							<div className="text-center flex flex-col items-center justify-center max-w-fit">
-								<div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+								<div className="bg-blue-white rounded-2xl h-32 w-[16rem] flex justify-center">
 									<Image
 										src={homeAssets.guardian}
 										alt="shield and sword icon"

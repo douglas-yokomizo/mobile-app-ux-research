@@ -67,7 +67,8 @@ export default function Home() {
 			<ul>
 				{users.map((user) => (
 					<li key={user.id}>
-						{user.name} - {user.email} - {user.phone} -  Pin :{user.pin} {/* o pin é só pra testar  */}
+						{user.name} - {user.email} - {user.phone} - Pin :{user.pin}{" "}
+						{/* o pin é só pra testar  */}
 					</li>
 				))}
 			</ul>
