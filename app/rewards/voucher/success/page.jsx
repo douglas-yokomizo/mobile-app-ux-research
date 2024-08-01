@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from 'react';
 import Image from "next/image";
 import SuccessMessage from "@/app/components/SuccessMessage";
 import duplicate from "@/app/assets/success/duplicate.svg";
@@ -5,8 +8,15 @@ import { arrow, gold } from "@/app/assets/homePage";
 import InfoCard from "@/app/components/InfoCard";
 import infoBalloon from "@/app/assets/success/infoBalloon.svg";
 import Badge from "@/app/components/Badge";
+import { useGame } from "../../../hooks/useGame";
 
 const SuccessPage = () => {
+  const { finishGame } = useGame();
+
+  useEffect(() => {
+    finishGame();
+  }, [finishGame]);
+
   const cardItems = [
     { title: "Valor do voucher", value: "R$ 00,00" },
     {
@@ -49,7 +59,10 @@ const SuccessPage = () => {
           57574HGHGKNSOET145MVOF
         </p>
         <div className="w-[90vw] border-b-2 border-divider pb-14 flex items-center justify-center font-semibold flex-col text-3xl gap-6 mt-12">
-          <button className="bg-blue-text flex items-center justify-center gap-4 w-full p-6 rounded-full text-white">
+          <button
+            className="bg-blue-text flex items-center justify-center gap-4 w-full p-6 rounded-full text-white"
+            onClick={finishGame}
+          >
             <Image src={duplicate} alt="" className="w-6" />
             <p>Copiar código</p>
           </button>
