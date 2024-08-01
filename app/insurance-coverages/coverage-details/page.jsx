@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import { policy } from "@/app/assets/brokers";
 import { arrow, peopleGroup } from "@/app/assets/homePage";
@@ -6,8 +7,17 @@ import { questionMark } from "@/app/assets/rewards";
 import HeaderNavigation from "@/app/components/HeaderNavigation";
 import TitleWithIcon from "@/app/components/TitleWithIcon";
 import { coverages } from "@/app/data/coverages";
+import { useGame } from "@/app/hooks/useGame";
+import { useEffect } from "react";
 
 const CoverageDetails = () => {
+  const { finishGame } = useGame();
+
+  useEffect(() => {
+    if (finishGame) {
+      finishGame();
+    }
+  }, [finishGame]);
   return (
     <div>
       <HeaderNavigation title={"Mais detalhes"} />
