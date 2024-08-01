@@ -41,32 +41,31 @@ export function GameContextProvider({ children }) {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		if (session) {
-			const channel = supabase
-				.channel("public:session")
-				.on(
-					"postgres_changes",
-					{
-						event: "*",
-						schema: "public",
-						table: "sessions",
-					},
-					({ new: session }) => {
-						if (session.winner !== player.id) {
-							localStorage.clear();
-							setChallenge("");
-							setPlayer({});
-							setSession(null);
-							return router.replace("/");
-						}
-					},
-				)
-				.subscribe();
 
-			return () => {
-				supabase.removeChannel(channel);
-			};
-		}
+		const channel = supabase
+			.channel("public:session")
+			.on(
+				"postgres_changes",
+				{
+					event: "*",
+					schema: "public",
+					table: "sessions",
+				},
+				({ new: session }) => {
+					if (session.winner !== null && session.winner !== player.id) {
+						localStorage.clear();
+						setChallenge("");
+						setPlayer({});
+						setSession(null);
+						return router.replace("/");
+					}
+				},
+			)
+			.subscribe();
+
+		return () => {
+			supabase.removeChannel(channel);
+		};
 	}, []);
 
 	function setGameSession(session) {
@@ -85,11 +84,13 @@ export function GameContextProvider({ children }) {
 			.from("sessions")
 			.update({ winner: player.id })
 			.eq("id", session.id);
-		localStorage.clear();
-		setChallenge("");
-		setPlayer({});
-		setSession(null);
-		return router.replace("/");
+		setTimeout(() => {
+			router.replace("/");
+			localStorage.clear();
+			setChallenge("");
+			setPlayer({});
+			setSession(null);
+		}, 5000);
 	}
 
 	return (

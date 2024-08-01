@@ -4,11 +4,24 @@ import HeaderNavigation from "../components/HeaderNavigation";
 import arrowRight from "../assets/pagamento/arrow-right.svg";
 import Image from "next/image";
 import dados from "../data/extratoDetails";
+import extrato from "../data/extrato";
 import arrowUp from "../assets/extrato/arrow-up.svg";
+import { useGame } from "../hooks/useGame";
+import { useEffect } from "react";
 
 export default function ExtratoDetalhes() {
+	const { finishGame } = useGame();
 	const searchParams = useSearchParams();
 	const mes = searchParams.get("mes") || "";
+
+	useEffect(() => {
+		if (mes === "Novembro") {
+			const encontrouExtrato = extrato.some((item) => item.mes === "Novembro");
+			if (encontrouExtrato) {
+				finishGame();
+			}
+		}
+	}, [mes, finishGame]);
 
 	return (
 		<main className="">
@@ -27,16 +40,14 @@ export default function ExtratoDetalhes() {
 				{dados.map((item, index) => (
 					<section key={index} className="my-12">
 						<div
-							className={` rounded-lg w-fit ${
-								item.status === "Pago"
-									? "border-green-dark border-2 bg-green-white"
-									: "border-2 border-red-base bg-red-error"
-							}`}
+							className={`rounded-lg w-fit ${item.status === "Pago"
+								? "border-green-dark border-2 bg-green-white"
+								: "border-2 border-red-base bg-red-error"
+								}`}
 						>
 							<p
-								className={`text-3xl p-2 font-semibold ${
-									item.status === "Pago" ? "text-green-dark" : "text-red-base"
-								}`}
+								className={`text-3xl p-2 font-semibold ${item.status === "Pago" ? "text-green-dark" : "text-red-base"
+									}`}
 							>
 								{item.status}
 							</p>
