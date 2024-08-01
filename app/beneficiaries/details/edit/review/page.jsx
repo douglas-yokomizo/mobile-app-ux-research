@@ -59,7 +59,11 @@ const ChangeReviewPage = () => {
         <div className="my-12"></div>
         <InfoCard items={cardItem2} title={"Dados anteriores"} />
         <div className="mt-10"></div>
-        <Button text="Continuar" onClick={() => router.push("/token")} />
+        <Button
+          text="Continuar"
+          className="text-white"
+          onClick={() => router.push("/token")}
+        />
         <div className="mt-10"></div>
         <Button
           text="Cancelar"

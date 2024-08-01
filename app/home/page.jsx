@@ -428,6 +428,15 @@ export default function Home() {
                     <span className="font-bold text-gray-500">Bom</span>
                   </li>
                 </ul>
+                <p className="text-3xl flex items-center gap-2 font-semibold pt-10">
+                  Ir para o Fully{" "}
+                  <Image
+                    src={homeAssets.arrow}
+                    alt="arrow icon"
+                    height={30}
+                    className="rotate-270 filter saturate-100 brightness-0"
+                  />
+                </p>
               </div>
             </div>
           </div>
