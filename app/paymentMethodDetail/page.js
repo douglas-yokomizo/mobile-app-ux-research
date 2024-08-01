@@ -6,12 +6,21 @@ import data from '../data/methodsPayment';
 import coin from '../assets/pagamento/coin.svg'
 import edit from '../assets/pagamento/edit.svg'
 import polices from '../assets/pagamento/polices.svg'
+import { useGame } from "../hooks/useGame";
+import { useEffect } from 'react';
 
 export default function PaymentMethodDetail() {
+    const { finishGame } = useGame();
     const searchParams = useSearchParams();
     const id = searchParams.get('id') || '';
 
     const item = data.find((item) => item.id.toString() === id);
+
+    useEffect(() => {
+        if (item.id = 1) {
+            finishGame()
+        }
+    })
 
     if (!item) {
         return (
@@ -97,14 +106,14 @@ export default function PaymentMethodDetail() {
                                 <button className='border-2 border-blue-500 text-blue-500 rounded-full text-4xl py-6 px-32 flex items-center'>
                                     <Image src={edit} height={50} width={50} className='object-contain' />
                                     Alterar frequência</button>
-                            </div> 
+                            </div>
 
                             <div className='w-full flex justify-center mt-12'>
                                 <button className='border-2 border-blue-500 text-blue-500 rounded-full text-4xl py-6 px-12 flex items-center'>
                                     <Image src={edit} height={50} width={50} className='object-contain' />
                                     Alterar forma de pagamento</button>
-                            </div> 
-                    </div>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </section>

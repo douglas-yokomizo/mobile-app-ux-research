@@ -90,7 +90,7 @@ export function GameContextProvider({ children }) {
 			setChallenge("");
 			setPlayer({});
 			setSession(null);
-		}, 5000);
+		}, 10000);
 	}
 
 	return (
