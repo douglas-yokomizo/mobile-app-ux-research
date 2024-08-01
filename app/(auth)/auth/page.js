@@ -1,32 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { useGame } from "@/app/hooks/useGame";
+import VirtualKeyboard from "../../components/VirtualKeyboard";
+import CHALLENGES from "../../data/challenges"
 
 export default function Auth() {
 	const [message, setMessage] = useState("");
 	const { setGameSession, session, setGamePlayer, player } = useGame();
-	const [pin, setPin] = useState("");
+
+	const [pin, setPin] = useState(["", "", "", "", "", ""]);
+	const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+	const [focusedInput, setFocusedInput] = useState(null);
 	const [player1Name, setPlayer1Name] = useState("");
 	const [player2Name, setPlayer2Name] = useState("");
 	const [gameStarted, setGameStarted] = useState(false);
 	const [countdown, setCountdown] = useState(null);
 	const router = useRouter();
+	const inputRefs = useRef([]);
 
-	const CHALLENGES = [
-		"RESGATE UM VOUCHER UBER NO FULLY",
-		"PAGUE UMA APÓLICE EM ATRASO",
-		"ACESSE AS INFORMAÇÕES DOS SEUS LIFE PLANNERS",
-		"ACESSE SEU EXTRATO DE NOVEMBRO",
-		"VEJA QUAIS APÓLICES VOCÊ PAGA NO CARTÃO DE CRÉDITO",
-		"ADICIONE UM NOVO E-MAIL",
-		"ADICIONE UM NOVO ENDEREÇO",
-		"VEJA SUA COBERTURA DE MORTE",
-		"EDITE OS DADOS DE UM BENEFICIÁRIO",
-		"VEJA AS CONDIÇÕES GERAIS DA SUA APÓLICE FAMÍLIA",
-	];
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
@@ -38,7 +32,7 @@ export default function Auth() {
 				async (payload) => {
 					console.log("Payload received:", payload);
 					const newSession = payload.new;
-					if (newSession.is_active) {
+					if (newSession.is_active) { 	
 						setMessage(
 							newSession.player2_id
 								? "Ambos jogadores estão conectados!"
@@ -115,11 +109,27 @@ export default function Auth() {
 		}, 1000);
 	};
 
-	async function authenticatePin() {
+	const handleChange = (value, index) => {
+		if (value.length > 1) return;
+
+		const newPin = [...pin];
+		newPin[index] = value;
+		setPin(newPin);
+
+		if (value !== "" && index < 5) {
+			inputRefs.current[index + 1]?.focus();
+		}
+
+		if (newPin.every((val) => val !== "")) {
+			authenticatePin(newPin.join(""));
+		}
+	};
+
+	async function authenticatePin(completePin) {
 		const { data: user, error } = await supabase
 			.from("users")
 			.select("*")
-			.eq("pin", pin)
+			.eq("pin", completePin)
 			.single();
 
 		if (error || !user) {
@@ -172,35 +182,55 @@ export default function Auth() {
 		}
 	}
 
+	const handleFocus = (index) => {
+		setFocusedInput(index);
+		setIsKeyboardVisible(true);
+	};
+
+
 	return (
-		<div>
-			<h1>Insira o PIN</h1>
-			<input
-				type="text"
-				placeholder="PIN"
-				value={pin}
-				onChange={(e) => setPin(e.target.value)}
-			/>
-			<button onClick={authenticatePin} type="button">
-				Autenticar
-			</button>
-			{message && <p>{message}</p>}
-			{countdown !== null && <p>Contagem regressiva: {countdown}</p>}
-			{session && (
-				<div>
-					<p>
-						ID da sessão: {session.id} - Jogador 1:{" "}
-						{player1Name || session.player1_id} - Jogador 2:{" "}
-						{player2Name || session.player2_id}
-						<p>Seu desafio é: {session.game_challenge}</p>
-					</p>
-					{session.player1_id && session.player2_id && !gameStarted && (
-						<button onClick={startGame} type="button">
-							Começar
-						</button>
-					)}
+		<div className="flex items-center justify-center min-h-screen bg-blue-900 text-white flex-col">
+			<h1 className="text-7xl my-10 font-bold text-center">Desafio Prudential</h1>
+			<div className="w-full max-w-md p-8 space-y-6 bg-blue-800 rounded-lg shadow-lg">
+				{session && (
+					<div className="mt-6 space-y-4 text-center flex justify-center flex-col">
+						<p>Jogador 1: {player1Name || session.player1_id}</p>
+						<p>Jogador 2: {player2Name || session.player2_id}</p>
+						<p className="mt-6 text-3xl">Seu desafio é: {session.game_challenge}</p>
+					</div>
+				)}
+				<h1 className="flex justify-center mt-8 space-x-2 text-white text-5xl font-bold">Insira seu PIN</h1>
+				<div className="flex justify-center mt-8 space-x-2 text-black">
+					{pin.map((digit, index) => (
+						<input
+							key={index}
+							ref={(el) => (inputRefs.current[index] = el)}
+							type="text"
+							maxLength="1"
+							value={digit}
+							onChange={(e) => handleChange(e.target.value, index)}
+							onFocus={() => handleFocus(index)}
+							className="w-12 h-12 text-xl text-center border-2 border-blue-300 rounded-md focus:outline-none focus:border-blue-500"
+						/>
+					))}
 				</div>
-			)}
+				{message && <p className="mt-4 text-center text-white">{message}</p>}
+				{countdown !== null && <p className="mt-4 text-center">Contagem regressiva: {countdown}</p>}
+				{session && session.player1_id && session.player2_id && !gameStarted && (
+					<button
+						onClick={startGame}
+						className="w-full p-4 text-xl font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500"
+					>
+						Começar
+					</button>
+				)}
+				<VirtualKeyboard
+					isVisible={isKeyboardVisible}
+					onChange={(value) => handleChange(value, focusedInput)}
+					focusedInput={focusedInput}
+				/>
+			</div>
 		</div>
 	);
 }
+
