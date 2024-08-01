@@ -5,9 +5,11 @@ import trophy from "@/app/assets/trophy.svg";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useGame } from "@/app/hooks/useGame";
 export default function SuccessPage() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
+	const { finishGame } = useGame();
 
 	const search = searchParams.get("tab");
 
@@ -24,9 +26,8 @@ export default function SuccessPage() {
 				}, 5000);
 				break;
 			default:
-				setTimeout(() => {
-					router.push("/");
-				}, 5000);
+				finishGame();
+				break;
 		}
 	});
 

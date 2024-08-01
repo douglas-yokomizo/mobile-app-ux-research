@@ -17,7 +17,6 @@ const checkForLatePayments = () => {
 
 export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [playerName, setPlayerName] = useState("");
   const contentRef = useRef(null);
   const router = useRouter();
   const [sliderRef, instanceRef] = useKeenSlider({
@@ -93,6 +92,7 @@ export default function Home() {
                 <button
                   onClick={() => router.push("/pagamento/pagamento-detalhes")}
                   className="uppercase pt-8 font-bold"
+									type="button"
                 >
                   Acessar notificação
                 </button>

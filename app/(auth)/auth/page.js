@@ -15,6 +15,19 @@ export default function Auth() {
 	const [countdown, setCountdown] = useState(null);
 	const router = useRouter();
 
+	const CHALLENGES = [
+		"RESGATE UM VOUCHER UBER NO FULLY",
+		"PAGUE UMA APÓLICE EM ATRASO",
+		"ACESSE AS INFORMAÇÕES DOS SEUS LIFE PLANNERS",
+		"ACESSE SEU EXTRATO DE NOVEMBRO",
+		"VEJA QUAIS APÓLICES VOCÊ PAGA NO CARTÃO DE CRÉDITO",
+		"ADICIONE UM NOVO E-MAIL",
+		"ADICIONE UM NOVO ENDEREÇO",
+		"VEJA SUA COBERTURA DE MORTE",
+		"EDITE OS DADOS DE UM BENEFICIÁRIO",
+		"VEJA AS CONDIÇÕES GERAIS DA SUA APÓLICE FAMÍLIA",
+	];
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const subscription = supabase
@@ -97,7 +110,7 @@ export default function Auth() {
 			if (timeLeft === 0) {
 				clearInterval(interval);
 				setMessage("Jogo iniciado!");
-				return router.push("/home?player=1");
+				return router.push("/home");
 			}
 		}, 1000);
 	};
@@ -134,9 +147,20 @@ export default function Auth() {
 				return setMessage("Erro ao criar a sessão.");
 			}
 		} else {
+			const challenge = CHALLENGES.map((value) => ({
+				value,
+				sort: Math.random(),
+			}))
+				.sort((a, b) => a.sort - b.sort)
+				.map(({ value }) => value)
+				.at(Math.floor(Math.random() * 3));
 			const { data: updatedSession, error: updateSessionError } = await supabase
 				.from("sessions")
-				.update({ player2_id: user.id, is_active: true })
+				.update({
+					player2_id: user.id,
+					is_active: true,
+					game_challenge: challenge,
+				})
 				.eq("id", existingSession.id)
 				.single();
 
@@ -168,6 +192,7 @@ export default function Auth() {
 						ID da sessão: {session.id} - Jogador 1:{" "}
 						{player1Name || session.player1_id} - Jogador 2:{" "}
 						{player2Name || session.player2_id}
+						<p>Seu desafio é: {session.game_challenge}</p>
 					</p>
 					{session.player1_id && session.player2_id && !gameStarted && (
 						<button onClick={startGame} type="button">
