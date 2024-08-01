@@ -6,8 +6,18 @@ import caution from "@/app/assets/success/caution2.svg";
 import money from "@/app/assets/success/money.svg";
 import dados from "@/app/data/extratoDetails.js";
 import { useRouter } from "next/navigation";
+import { useGame } from "../../../hooks/useGame";
+import { useEffect } from "react";
 
 const SuccessPage = () => {
+  const { finishGame } = useGame();
+
+  useEffect(() => {
+    if (finishGame) {
+      finishGame();
+    }
+  }, [finishGame]);
+
   const apoliceData = dados.find((item) => item.status === "Em Atraso");
   const router = useRouter();
 
