@@ -7,10 +7,20 @@ import cautionIcon from "./caution-icon.svg";
 import copyIcon from "./copy-icon.svg";
 import { Button } from "../components/Button";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useGame } from "../hooks/useGame";
 
 export default function Resumo() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+
+	const { finishGame } = useGame();
+
+	useEffect(() => {
+		setTimeout(() => {
+			finishGame();
+		}, 3000);
+	}, []);
 
 	const search = searchParams.get("tab");
 

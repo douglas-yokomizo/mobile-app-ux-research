@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import FooterNavigationHome from "../components/FooterNavigation";
 import * as homeAssets from "../assets/homePage";
 import Badge from "../components/Badge";
@@ -9,6 +9,7 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { useRouter } from "next/navigation";
 import dados from "../data/extratoDetails";
+import { useGame } from "../hooks/useGame";
 
 const checkForLatePayments = () => {
   return dados.some((item) => item.status === "Em Atraso");
@@ -16,6 +17,7 @@ const checkForLatePayments = () => {
 
 export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [playerName, setPlayerName] = useState("");
   const contentRef = useRef(null);
   const router = useRouter();
   const [sliderRef, instanceRef] = useKeenSlider({
@@ -31,6 +33,7 @@ export default function Home() {
   };
 
   const maxHeight = isExpanded ? `${contentRef.current.scrollHeight}px` : "0px";
+  const { challenge, player } = useGame();
 
   return (
     <>
@@ -45,7 +48,7 @@ export default function Home() {
                 width={120}
               />
               <div className="font-bold">
-                <h2 className="text-4xl mb-4">Olá, João Pedro</h2>
+                <h2 className="text-4xl mb-4">Olá, {player.name}</h2>
                 <h3 className="text-2xl flex items-center gap-2">
                   Meu perfil{" "}
                   <Image
@@ -68,7 +71,7 @@ export default function Home() {
               </span>
             </div>
           </header>
-          {hasLatePayments && (
+          {hasLatePayments && challenge !== "Pagamento em atraso" && (
             <div className=" relative bg-yellow-caution rounded-3xl text-black text-3xl p-10">
               <div className="flex">
                 <Image
@@ -183,7 +186,7 @@ export default function Home() {
           <ul className="font-semibold keen-slider text-2xl">
             <li className="keen-slider__slide">
               <div className="text-center flex flex-col items-center justify-center max-w-fit">
-                <div className="bg-blue-200 border-2 border-blue-600 border-dashed rounded-2xl  h-32 w-[16rem] flex justify-center">
+                <div className="bg-blue-white rounded-2xl h-32 w-[16rem] flex justify-center">
                   <Image
                     src={homeAssets.guardian}
                     alt="shield and sword icon"
@@ -482,8 +485,15 @@ export default function Home() {
                     className="bg-blue-50 w-32 h-32 rounded-full p-8"
                   />
                 </div>
-                <button className="text-3xl font-semibold text-blue-600 flex items-center gap-4">
-                  <div onClick={() => router.push("/brokers")}>
+                <button
+                  className="text-3xl font-semibold text-blue-600 flex items-center gap-4"
+                  type="button"
+                >
+                  <div
+                    onClick={() => router.push("/brokers")}
+                    onKeyDown={() => router.push("/brokers")}
+                    onTouchEnd={() => router.push("/brokers")}
+                  >
                     Mais detalhes
                   </div>
                   <Image
@@ -508,7 +518,10 @@ export default function Home() {
               Estamos aqui para oferecer o melhor atendimento e assistência
               possível.
             </p>
-            <button className="text-blue-600 border-2 font-semibold w-full p-4 mt-10 rounded-full border-blue-600">
+            <button
+              className="text-blue-600 border-2 font-semibold w-full p-4 mt-10 rounded-full border-blue-600"
+              type="button"
+            >
               Acessar atendimento
             </button>
           </div>

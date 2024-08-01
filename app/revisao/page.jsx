@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { EnderecosComponent } from "./components/Enderecos";
 import { BeneficiariosComponent } from "./components/Benefericiarios";
 import HeaderNavigation from "../components/HeaderNavigation";
+import { useEffect } from "react";
+import { useGame } from "../hooks/useGame";
 
 export default function Revisao() {
 	const searchParams = useSearchParams();
