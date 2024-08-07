@@ -4,10 +4,18 @@ import HeaderNavigation from "../components/HeaderNavigation";
 import arrowRight from "../assets/pagamento/arrow-right.svg";
 import Image from "next/image";
 import dados from "../data/extratoDetails";
-import extrato from "../data/extrato";
 import arrowUp from "../assets/extrato/arrow-up.svg";
-import { useGame } from "../hooks/useGame";
-import { useEffect } from "react";
+import { motion } from "framer-motion";
+
+const fadeInVariants = {
+	hidden: { opacity: 0 },
+	visible: (i) => ({
+		opacity: 1,
+		transition: {
+			delay: i * 0.2, // Delay based on the index
+		},
+	}),
+};
 
 export default function ExtratoDetalhes() {
 	const { finishGame } = useGame();
@@ -27,7 +35,13 @@ export default function ExtratoDetalhes() {
 		<main className="">
 			<HeaderNavigation title="Mais detalhes" />
 			<section className="p-12">
-				<header className="flex justify-center items-center gap-12">
+				<motion.header
+					className="flex justify-center items-center gap-12"
+					initial="hidden"
+					animate="visible"
+					custom={0}
+					variants={fadeInVariants}
+				>
 					<h1 className="text-captions-heading text-5xl font-semibold">
 						{mes}/2023
 					</h1>
@@ -35,20 +49,19 @@ export default function ExtratoDetalhes() {
 						<span className="text-4xl mx-5">Total</span>
 						<span className="text-5xl font-semibold">R$1200,45</span>
 					</p>
-				</header>
+				</motion.header>
 
 				{dados.map((item, index) => (
-					<section key={index} className="my-12">
-						<div
-							className={`rounded-lg w-fit ${item.status === "Pago"
-								? "border-green-dark border-2 bg-green-white"
-								: "border-2 border-red-base bg-red-error"
-								}`}
-						>
-							<p
-								className={`text-3xl p-2 font-semibold ${item.status === "Pago" ? "text-green-dark" : "text-red-base"
-									}`}
-							>
+					<motion.section
+						key={index}
+						className="my-12"
+						initial="hidden"
+						animate="visible"
+						custom={index + 1}
+						variants={fadeInVariants}
+					>
+						<div className="border-green-dark border-2 bg-green-white rounded-lg w-min">
+							<p className="text-3xl p-2 text-green-dark font-semibold">
 								{item.status}
 							</p>
 						</div>
@@ -79,7 +92,7 @@ export default function ExtratoDetalhes() {
 							</p>
 						</div>
 						<div className="border-b-2 border-gray-300 my-3"></div>
-					</section>
+					</motion.section>
 				))}
 			</section>
 			<Image

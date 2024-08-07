@@ -17,8 +17,8 @@ export default function Resumo() {
 	const { finishGame } = useGame();
 
 	useEffect(() => {
-			finishGame();
-	}, []);
+		finishGame();
+	});
 
 	const search = searchParams.get("tab");
 

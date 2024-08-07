@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { useGame } from "@/app/hooks/useGame";
 import VirtualKeyboard from "../../components/VirtualKeyboard";
-import CHALLENGES from "../../data/challenges"
+import { CHALLENGES } from "../../data/challenges";
 
 export default function Auth() {
 	const [message, setMessage] = useState("");
@@ -21,7 +21,6 @@ export default function Auth() {
 	const router = useRouter();
 	const inputRefs = useRef([]);
 
-
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const subscription = supabase
@@ -32,7 +31,7 @@ export default function Auth() {
 				async (payload) => {
 					console.log("Payload received:", payload);
 					const newSession = payload.new;
-					if (newSession.is_active) { 	
+					if (newSession.is_active) {
 						setMessage(
 							newSession.player2_id
 								? "Ambos jogadores estão conectados!"
@@ -187,19 +186,24 @@ export default function Auth() {
 		setIsKeyboardVisible(true);
 	};
 
-
 	return (
 		<div className="flex items-center justify-center min-h-screen bg-blue-900 text-white flex-col">
-			<h1 className="text-7xl my-10 font-bold text-center">Desafio Prudential</h1>
+			<h1 className="text-7xl my-10 font-bold text-center">
+				Desafio Prudential
+			</h1>
 			<div className="w-full max-w-md p-8 space-y-6 bg-blue-800 rounded-lg shadow-lg">
 				{session && (
 					<div className="mt-6 space-y-4 text-center flex justify-center flex-col">
 						<p>Jogador 1: {player1Name || session.player1_id}</p>
 						<p>Jogador 2: {player2Name || session.player2_id}</p>
-						<p className="mt-6 text-3xl">Seu desafio é: {session.game_challenge}</p>
+						<p className="mt-6 text-3xl">
+							Seu desafio é: {session.game_challenge}
+						</p>
 					</div>
 				)}
-				<h1 className="flex justify-center mt-8 space-x-2 text-white text-5xl font-bold">Insira seu PIN</h1>
+				<h1 className="flex justify-center mt-8 space-x-2 text-white text-5xl font-bold">
+					Insira seu PIN
+				</h1>
 				<div className="flex justify-center mt-8 space-x-2 text-black">
 					{pin.map((digit, index) => (
 						<input
@@ -215,15 +219,20 @@ export default function Auth() {
 					))}
 				</div>
 				{message && <p className="mt-4 text-center text-white">{message}</p>}
-				{countdown !== null && <p className="mt-4 text-center">Contagem regressiva: {countdown}</p>}
-				{session && session.player1_id && session.player2_id && !gameStarted && (
-					<button
-						onClick={startGame}
-						className="w-full p-4 text-xl font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500"
-					>
-						Começar
-					</button>
+				{countdown !== null && (
+					<p className="mt-4 text-center">Contagem regressiva: {countdown}</p>
 				)}
+				{session &&
+					session.player1_id &&
+					session.player2_id &&
+					!gameStarted && (
+						<button
+							onClick={startGame}
+							className="w-full p-4 text-xl font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500"
+						>
+							Começar
+						</button>
+					)}
 				<VirtualKeyboard
 					isVisible={isKeyboardVisible}
 					onChange={(value) => handleChange(value, focusedInput)}
@@ -233,4 +242,3 @@ export default function Auth() {
 		</div>
 	);
 }
-

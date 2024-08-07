@@ -13,6 +13,17 @@ import { arrow, gold } from "../../assets/homePage";
 import TitleWithIcon from "../../components/TitleWithIcon";
 import Modal from "../../components/Modal";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  visible: (i) => ({
+    opacity: 1,
+    transition: {
+      delay: i * 0.2,
+    },
+  }),
+};
 
 const VoucherDetails = () => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
@@ -43,18 +54,54 @@ const VoucherDetails = () => {
   return (
     <main>
       <HeaderNavigation title={"Resgatar Voucher"} />
-      <Image src={uberBigCover} alt="uber cover image" className="w-full" />
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        custom={0}
+        variants={fadeInVariants}
+      >
+        <Image src={uberBigCover} alt="uber cover image" className="w-full" />
+      </motion.div>
       <div className="container p-10">
         <section>
-          <h1 className="text-6xl font-bold mt-2">Uber</h1>
-          <p className="text-3xl text-gray-text my-7">Saldo disponível</p>
-          <Badge
-            src={gold}
-            badgeValue={"1060"}
-            bgColor={"bg-blue-strong"}
-            className="text-white w-fit px-6 rounded-2xl mb-20"
-          />
-          <div className="bg-gray-light w-[90vw] rounded-2xl p-10">
+          <motion.h1
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            variants={fadeInVariants}
+            className="text-6xl font-bold mt-2"
+          >
+            Uber
+          </motion.h1>
+          <motion.p
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            variants={fadeInVariants}
+            className="text-3xl text-gray-text my-7"
+          >
+            Saldo disponível
+          </motion.p>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            custom={3}
+            variants={fadeInVariants}
+          >
+            <Badge
+              src={gold}
+              badgeValue={"1060"}
+              bgColor={"bg-blue-strong"}
+              className="text-white w-fit px-6 rounded-2xl mb-20"
+            />
+          </motion.div>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            custom={4}
+            variants={fadeInVariants}
+            className="bg-gray-light w-[90vw] rounded-2xl p-10"
+          >
             <div className="flex justify-between items-center border-b-2 border-divider text-gray-text">
               <div>
                 <p className="text-3xl">Valor do voucher</p>
@@ -78,11 +125,17 @@ const VoucherDetails = () => {
                 Validade para 3 meses a partir da data do resgate
               </p>
             </div>
-          </div>
+          </motion.div>
         </section>
       </div>
       <section className="bg-blue-white w-[100vw] p-10 ">
-        <div className="flex items-center justify-between border-b-2 pb-14 pt-4 border-divider">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          custom={5}
+          variants={fadeInVariants}
+          className="flex items-center justify-between border-b-2 pb-14 pt-4 border-divider"
+        >
           <div className="flex items-center gap-4">
             <Image src={listIcon} alt="list icon" className="w-10" />
             <h3 className="font-bold text-4xl">Descrição</h3>
@@ -92,14 +145,16 @@ const VoucherDetails = () => {
             alt=""
             className="w-8 filter invert brightness-100 saturate-0 rotate-90"
           />
-        </div>
-        <div className="flex items-center justify-between border-b-2 py-14 border-divider">
+        </motion.div>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          custom={6}
+          variants={fadeInVariants}
+          className="flex items-center justify-between border-b-2 py-14 border-divider"
+        >
           <div className="flex items-center gap-4">
-            <Image
-              src={questionMark}
-              alt="question mark icon"
-              className="w-10"
-            />
+            <Image src={questionMark} alt="question mark icon" className="w-10" />
             <h3 className="font-bold text-4xl">Como usar</h3>
           </div>
           <Image
@@ -107,8 +162,14 @@ const VoucherDetails = () => {
             alt=""
             className="w-8 filter invert brightness-100 saturate-0 rotate-90"
           />
-        </div>
-        <div className="bg-white px-10 py-8 mt-10 rounded-2xl">
+        </motion.div>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          custom={7}
+          variants={fadeInVariants}
+          className="bg-white px-10 py-8 mt-10 rounded-2xl"
+        >
           <div className="place-self-start">
             <TitleWithIcon
               title="Atendimento"
@@ -125,8 +186,14 @@ const VoucherDetails = () => {
               suporte@livefully.com
             </button>
           </div>
-        </div>
-        <div className="bg-white px-10 py-8 mt-10 rounded-2xl">
+        </motion.div>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          custom={8}
+          variants={fadeInVariants}
+          className="bg-white px-10 py-8 mt-10 rounded-2xl"
+        >
           <div className="place-self-start">
             <TitleWithIcon
               title="Leia os termos"
@@ -154,9 +221,15 @@ const VoucherDetails = () => {
               Li e concordo com os termos.
             </label>
           </div>
-        </div>
+        </motion.div>
       </section>
-      <section className="bg-white py-10 flex items-center justify-center">
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        custom={9}
+        variants={fadeInVariants}
+        className="bg-white py-10 flex items-center justify-center"
+      >
         <button
           className={` w-11/12 rounded-full transition ease-in-out bg-[#F0EFF2] p-4 text-3xl text-gray-text ${
             !isTermsAccepted
@@ -168,7 +241,7 @@ const VoucherDetails = () => {
         >
           Resgatar
         </button>
-      </section>
+      </motion.section>
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
