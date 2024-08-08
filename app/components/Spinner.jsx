@@ -1,8 +1,8 @@
-export function Spinner() {
+export function Spinner({ height = "w-10", width = "h-10" }) {
 	return (
 		<svg
 			aria-hidden="true"
-			class="w-10 h-10 text-[#CCE1FD] animate-spin  fill-blue-600"
+			className={`${height} ${width} text-[#CCE1FD] animate-spin  fill-blue-600`}
 			viewBox="0 0 100 101"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"

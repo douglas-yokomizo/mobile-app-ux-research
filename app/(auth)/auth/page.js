@@ -5,217 +5,211 @@ import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { useGame } from "@/app/hooks/useGame";
 import { CHALLENGES } from "../../data/challenges";
+import { Spinner } from "@/app/components/Spinner";
+import { StartIcon } from "./StartIcon";
+import PrudentialLogo from "./Prudential-Logo.png";
+import Image from "next/image";
+import { RunnerIcon } from "./RunnerIcon";
 
 //deus esta morto
 export default function Auth() {
-    const [message, setMessage] = useState("");
-    const { setGameSession, session, setGamePlayer, player } = useGame();
-    const [player1Name, setPlayer1Name] = useState("");
-    const [player2Name, setPlayer2Name] = useState("");
-    const [gameStarted, setGameStarted] = useState(false);
-    const [countdown, setCountdown] = useState(null);
-    const [waiting, setWaiting] = useState(false);
-    const router = useRouter();
-    const inputRefs = useRef([]);
+	const [message, setMessage] = useState("");
+	const { setGameSession, setGamePlayer, session } = useGame();
+	const [countdown, setCountdown] = useState(5);
+	const [gameStarted, setGameStarted] = useState(false);
+	const [waiting, setWaiting] = useState(false);
 
-    useEffect(() => {
-        const subscription = supabase
-            .channel("realtime:sessions")
-            .on(
-                "postgres_changes",
-                { event: "*", schema: "public", table: "sessions" },
-                async (payload) => {
-                    console.log("Payload received:", payload);
-                    const newSession = payload.new;
-                    if (newSession.is_active) {
-                        setMessage(
-                            newSession.player2_id
-                                ? "Ambos jogadores estão conectados!"
-                                : "Esperando pelo outro jogador..."
-                        );
-                        setGameSession(newSession);
-                        await fetchPlayerNames(newSession);
+	useEffect(() => {
+		const subscription = supabase
+			.channel("realtime:sessions")
+			.on(
+				"postgres_changes",
+				{ event: "*", schema: "public", table: "sessions" },
+				async (payload) => {
+					console.log("Payload received:", payload);
+					const newSession = payload.new;
+					if (newSession.is_active) {
+						if (newSession.game_started) {
+							setGameStarted(true);
+						}
+					}
+				},
+			)
+			.subscribe();
 
-                        if (newSession.game_started) {
-                            setGameStarted(true);
-                            calculateCountdown(newSession.countdown_start_time);
-                        }
-                    }
-                }
-            )
-            .subscribe();
+		return () => {
+			supabase.removeChannel(subscription);
+		};
+	}, []);
 
-        return () => {
-            supabase.removeChannel(subscription);
-        };
-    }, []);
+	useEffect(() => {
+		if (waiting) {
+			let index = 0;
+			const messages = [
+				"Sessão criada, aguardando outro jogador.",
+				"Sessão criada, aguardando outro jogador..",
+				"Sessão criada, aguardando outro jogador...",
+			];
+			const interval = setInterval(() => {
+				setMessage(messages[index]);
+				index = (index + 1) % messages.length;
+			}, 1000);
 
-    useEffect(() => {
-        if (waiting) {
-            let index = 0;
-            const messages = [
-                "Sessão criada, aguardando outro jogador.",
-                "Sessão criada, aguardando outro jogador..",
-                "Sessão criada, aguardando outro jogador...",
-            ];
-            const interval = setInterval(() => {
-                setMessage(messages[index]);
-                index = (index + 1) % messages.length;
-            }, 1000);
+			return () => clearInterval(interval);
+		}
+	}, [waiting]);
 
-            return () => clearInterval(interval);
-        }
-    }, [waiting]);
+	const startGame = async () => {
+		try {
+			// Criar um novo jogador com nome aleatório
+			const playerName = `Player_${Math.random().toString(36).substring(2, 15)}`;
+			const { data: user, error: userError } = await supabase
+				.from("users")
+				.insert([{ name: playerName }])
+				.select()
+				.single();
 
-    const fetchPlayerNames = async (session) => {
-        if (session.player1_id) {
-            const { data: player1, error: player1Error } = await supabase
-                .from("users")
-                .select("name")
-                .eq("id", session.player1_id)
-                .single();
-            if (!player1Error) setPlayer1Name(player1.name);
-        }
+			if (userError) {
+				console.error("Erro ao criar jogador:", userError);
+				return;
+			}
 
-        if (session.player2_id) {
-            const { data: player2, error: player2Error } = await supabase
-                .from("users")
-                .select("name")
-                .eq("id", session.player2_id)
-                .single();
-            if (!player2Error) setPlayer2Name(player2.name);
-        }
-    };
+			if (!user) {
+				return;
+			}
 
-    const startGame = async () => {
-        try {
-            // Criar um novo jogador com nome aleatório
-            const playerName = `Player_${Math.random().toString(36).substring(2, 15)}`;
-            const { data: user, error: userError } = await supabase
-                .from("users")
-                .insert([{ name: playerName }])
-                .select()
-                .single();
+			setGamePlayer(user);
+			const { data: sessions, error: sessionsError } = await supabase
+				.from("sessions")
+				.select("*")
+				.eq("is_active", false)
+				.is("player2_id", null);
 
-            if (userError) {
-                console.error("Erro ao criar jogador:", userError);
-                setMessage(`Erro ao criar jogador: ${userError.message}`);
-                return;
-            }
+			if (sessionsError) {
+				console.error("Erro ao buscar sessões:", sessionsError);
+				return;
+			}
 
-            if (!user) {
-                setMessage("Erro ao criar jogador: nenhum dado retornado.");
-                return;
-            }
+			let session;
+			if (sessions.length === 0) {
+				const { data: newSession, error: newSessionError } = await supabase
+					.from("sessions")
+					.insert([{ player1_id: user.id, is_active: false }])
+					.select()
+					.single();
 
-            setGamePlayer(user);
-            const { data: sessions, error: sessionsError } = await supabase
-                .from("sessions")
-                .select("*")
-                .eq("is_active", false)
-                .is("player2_id", null);
+				if (newSessionError) {
+					console.error("Erro ao criar a sessão:", newSessionError);
+					return;
+				}
 
-            if (sessionsError) {
-                console.error("Erro ao buscar sessões:", sessionsError);
-                setMessage("Erro ao buscar sessões.");
-                return;
-            }
+				session = newSession;
+				setWaiting(true); // Inicia a animação
+			} else {
+				session = sessions[0];
+				const challenge = CHALLENGES[~~(Math.random() * CHALLENGES.length)];
 
-            let session;
-            if (sessions.length === 0) {
-                const { data: newSession, error: newSessionError } = await supabase
-                    .from("sessions")
-                    .insert([{ player1_id: user.id, is_active: false }])
-                    .select()
-                    .single();
+				const { data: updatedSession, error: updateSessionError } =
+					await supabase
+						.from("sessions")
+						.update({
+							player2_id: user.id,
+							is_active: true,
+							game_challenge: challenge,
+							game_started: sessions.length > 0,
+							countdown_start_time:
+								sessions.length > 0 ? new Date().toISOString() : null,
+						})
+						.eq("id", session.id)
+						.select()
+						.single();
 
-                if (newSessionError) {
-                    console.error("Erro ao criar a sessão:", newSessionError);
-                    setMessage("Erro ao criar a sessão.");
-                    return;
-                }
+				if (updateSessionError) {
+					console.error("Erro ao entrar na sessão:", updateSessionError);
+					return;
+				}
 
-                session = newSession;
-                setWaiting(true); // Inicia a animação
-            } else {
-                session = sessions[0];
-                const challenge = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
+				session = updatedSession;
+			}
 
-                const { data: updatedSession, error: updateSessionError } = await supabase
-                    .from("sessions")
-                    .update({
-                        player2_id: user.id,
-                        is_active: true,
-                        game_challenge: challenge,
-                        game_started: sessions.length > 0,
-                        countdown_start_time: sessions.length > 0 ? new Date().toISOString() : null,
-                    })
-                    .eq("id", session.id)
-                    .select()
-                    .single();
+			setGameSession(session);
+		} catch (err) {
+			console.error("Erro inesperado:", err);
+		}
+	};
 
-                if (updateSessionError) {
-                    console.error("Erro ao entrar na sessão:", updateSessionError);
-                    setMessage("Erro ao entrar na sessão.");
-                    return;
-                }
+	useEffect(() => {
+		if (gameStarted) {
+			const timer =
+				countdown > 0 && setInterval(() => setCountdown(countdown - 1), 1000);
+			if (countdown === 0) {
+				clearInterval(timer);
+				return window.location.replace("/home");
+			}
 
-                session = updatedSession;
-                setMessage("Sessão iniciada, ambos jogadores estão conectados!");
-            }
+			return () => clearInterval(timer);
+		}
+	}, [gameStarted, countdown]);
 
-            setGameSession(session);
-            fetchPlayerNames(session);
-            if (session.game_started) {
-                calculateCountdown(session.countdown_start_time);
-            }
-        } catch (err) {
-            console.error("Erro inesperado:", err);
-            setMessage(`Erro inesperado: ${err.message}`);
-        }
-    };
+	return (
+		<div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#1F508E] to-[#031F45] text-white flex-col">
+			<Image src={PrudentialLogo} className=" my-10 fixed top-0 w-[300px]" />
 
-    const calculateCountdown = (startTime) => {
-        const endTime = new Date(startTime);
-        endTime.setSeconds(endTime.getSeconds() + 10);
-        const interval = setInterval(() => {
-            const now = new Date();
-            const timeLeft = Math.max(0, Math.ceil((endTime - now) / 1000));
-            setCountdown(timeLeft);
-            if (timeLeft === 0) {
-                clearInterval(interval);
-                setMessage("Jogo iniciado!");
-                return router.push("/home");
-            }
-        }, 1000);
-    };
+			<div className="w-full  max-w-2xl p-9 space-y-10 bg-[#FCFCFC] rounded-xl shadow-lg text-[#1F1F24]">
+				{gameStarted ? (
+					<>
+						<span className="w-full items-center justify-center flex">
+							<RunnerIcon />
+						</span>
+						<p className="text-center text-2xl">Seu objetivo é</p>
 
-    return (
-        <div className="flex items-center justify-center min-h-screen bg-blue-900 text-white flex-col">
-            <h1 className="text-7xl my-10 font-bold text-center">
-                Desafio Prudential
-            </h1>
-            <div className="w-full max-w-md p-8 space-y-6 bg-blue-800 rounded-lg shadow-lg">
-                {session && (
-                    <div className="mt-6 space-y-4 text-center flex justify-center flex-col">
-                        <p>Jogador 1: {player1Name || session.player1_id}</p>
-                        <p>Jogador 2: {player2Name || session.player2_id}</p>
-                        <p className="mt-6 text-3xl">
-                            Seu desafio é: {session.game_challenge}
-                        </p>
-                    </div>
-                )}
-                {message && <p className="mt-4 text-center text-white">{message}</p>}
-                {countdown !== null && (
-                    <p className="mt-4 text-center">Contagem regressiva: {countdown}</p>
-                )}
-                <button
-                    onClick={startGame}
-                    className="w-full p-4 text-xl font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500"
-                >
-                    Começar
-                </button>
-            </div>
-        </div>
-    );
+						<p className=" font-bold text-3xl text-center">
+							{session.game_challenge[0].toUpperCase() +
+								session.game_challenge.substring(1).toLowerCase()}
+						</p>
+
+						<div className="flex items-center flex-col gap-2 p-6 bg-[#F0EFF2] rounded-3xl">
+							<p className="text-xl">O desafio vai começar em...</p>
+
+							<p className="font-bold text-3xl">{countdown}</p>
+						</div>
+					</>
+				) : (
+					<>
+						<span className="w-full items-center justify-center flex">
+							<StartIcon />
+						</span>
+						<h2 className="font-bold text-center text-6xl text-black">
+							Boas vindas
+						</h2>
+						<p className="text-center text-2xl ">
+							O aplicativo Prudential vem aí, por isso <br />
+							preparamos esse jogo para a rede de
+							<br /> franquia conhecer algumas
+							<br /> funcionalidades do app.
+						</p>
+						<p className="text-center text-2xl">
+							Para vencer, seja ágil e complete seu
+							<br /> objetivo antes do seu adversário.
+						</p>
+						<button
+							onClick={startGame}
+							className="w-full p-6 text-xl text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 disabled:bg-[#F0EFF2] disabled:text-[#5E5E63]"
+							disabled={waiting}
+							type="button"
+						>
+							{waiting ? (
+								<div className="flex items-center justify-center gap-6">
+									<Spinner height="w-7" />
+									Aguardando adversário
+								</div>
+							) : (
+								"Começar a jogar"
+							)}
+						</button>
+					</>
+				)}
+			</div>
+		</div>
+	);
 }

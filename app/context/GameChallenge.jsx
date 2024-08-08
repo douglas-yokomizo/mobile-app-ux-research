@@ -7,7 +7,6 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 export const GameContext = createContext();
 
 export function GameContextProvider({ children }) {
-	const playerId = useSearchParams();
 	const router = useRouter();
 	const [challenge, setChallenge] = useState(() => {
 		const storedChallenge =
@@ -41,7 +40,6 @@ export function GameContextProvider({ children }) {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-
 		const channel = supabase
 			.channel("public:session")
 			.on(

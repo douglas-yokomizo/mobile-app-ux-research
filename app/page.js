@@ -1,9 +1,9 @@
-import Register from './cadastro/page.js'
+import Auth from "./(auth)/auth/page.js";
 
 export default function Main() {
-  return (
-    <main>
-      <Register />
-    </main>
-  );
+	return (
+		<main>
+			<Auth />
+		</main>
+	);
 }
