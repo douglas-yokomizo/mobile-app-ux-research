@@ -4,241 +4,218 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { useGame } from "@/app/hooks/useGame";
-import VirtualKeyboard from "../../components/VirtualKeyboard";
 import { CHALLENGES } from "../../data/challenges";
 
+//deus esta morto
 export default function Auth() {
-	const [message, setMessage] = useState("");
-	const { setGameSession, session, setGamePlayer, player } = useGame();
+    const [message, setMessage] = useState("");
+    const { setGameSession, session, setGamePlayer, player } = useGame();
+    const [player1Name, setPlayer1Name] = useState("");
+    const [player2Name, setPlayer2Name] = useState("");
+    const [gameStarted, setGameStarted] = useState(false);
+    const [countdown, setCountdown] = useState(null);
+    const [waiting, setWaiting] = useState(false);
+    const router = useRouter();
+    const inputRefs = useRef([]);
 
-	const [pin, setPin] = useState(["", "", "", "", "", ""]);
-	const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-	const [focusedInput, setFocusedInput] = useState(null);
-	const [player1Name, setPlayer1Name] = useState("");
-	const [player2Name, setPlayer2Name] = useState("");
-	const [gameStarted, setGameStarted] = useState(false);
-	const [countdown, setCountdown] = useState(null);
-	const router = useRouter();
-	const inputRefs = useRef([]);
+    useEffect(() => {
+        const subscription = supabase
+            .channel("realtime:sessions")
+            .on(
+                "postgres_changes",
+                { event: "*", schema: "public", table: "sessions" },
+                async (payload) => {
+                    console.log("Payload received:", payload);
+                    const newSession = payload.new;
+                    if (newSession.is_active) {
+                        setMessage(
+                            newSession.player2_id
+                                ? "Ambos jogadores estão conectados!"
+                                : "Esperando pelo outro jogador..."
+                        );
+                        setGameSession(newSession);
+                        await fetchPlayerNames(newSession);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-	useEffect(() => {
-		const subscription = supabase
-			.channel("realtime:sessions")
-			.on(
-				"postgres_changes",
-				{ event: "*", schema: "public", table: "sessions" },
-				async (payload) => {
-					console.log("Payload received:", payload);
-					const newSession = payload.new;
-					if (newSession.is_active) {
-						setMessage(
-							newSession.player2_id
-								? "Ambos jogadores estão conectados!"
-								: "Esperando pelo outro jogador...",
-						);
-						setGameSession(newSession);
-						await fetchPlayerNames(newSession);
+                        if (newSession.game_started) {
+                            setGameStarted(true);
+                            calculateCountdown(newSession.countdown_start_time);
+                        }
+                    }
+                }
+            )
+            .subscribe();
 
-						if (newSession.game_started) {
-							setGameStarted(true);
+        return () => {
+            supabase.removeChannel(subscription);
+        };
+    }, []);
 
-							calculateCountdown(newSession.countdown_start_time);
-						}
-					}
-				},
-			)
-			.subscribe();
+    useEffect(() => {
+        if (waiting) {
+            let index = 0;
+            const messages = [
+                "Sessão criada, aguardando outro jogador.",
+                "Sessão criada, aguardando outro jogador..",
+                "Sessão criada, aguardando outro jogador...",
+            ];
+            const interval = setInterval(() => {
+                setMessage(messages[index]);
+                index = (index + 1) % messages.length;
+            }, 1000);
 
-		return () => {
-			supabase.removeChannel(subscription);
-		};
-	}, []);
+            return () => clearInterval(interval);
+        }
+    }, [waiting]);
 
-	const fetchPlayerNames = async (session) => {
-		if (session.player1_id) {
-			const { data: player1, error: player1Error } = await supabase
-				.from("users")
-				.select("name")
-				.eq("id", session.player1_id)
-				.single();
-			if (!player1Error) setPlayer1Name(player1.name);
-		}
+    const fetchPlayerNames = async (session) => {
+        if (session.player1_id) {
+            const { data: player1, error: player1Error } = await supabase
+                .from("users")
+                .select("name")
+                .eq("id", session.player1_id)
+                .single();
+            if (!player1Error) setPlayer1Name(player1.name);
+        }
 
-		if (session.player2_id) {
-			const { data: player2, error: player2Error } = await supabase
-				.from("users")
-				.select("name")
-				.eq("id", session.player2_id)
-				.single();
-			if (!player2Error) setPlayer2Name(player2.name);
-		}
-	};
+        if (session.player2_id) {
+            const { data: player2, error: player2Error } = await supabase
+                .from("users")
+                .select("name")
+                .eq("id", session.player2_id)
+                .single();
+            if (!player2Error) setPlayer2Name(player2.name);
+        }
+    };
 
-	const startGame = async () => {
-		if (!session) {
-			setMessage("Nenhuma sessão ativa.");
-			return;
-		}
+    const startGame = async () => {
+        try {
+            // Criar um novo jogador com nome aleatório
+            const playerName = `Player_${Math.random().toString(36).substring(2, 15)}`;
+            const { data: user, error: userError } = await supabase
+                .from("users")
+                .insert([{ name: playerName }])
+                .select()
+                .single();
 
-		const countdownStartTime = new Date().toISOString();
-		const { error } = await supabase
-			.from("sessions")
-			.update({ game_started: true, countdown_start_time: countdownStartTime })
-			.eq("id", session.id);
+            if (userError) {
+                console.error("Erro ao criar jogador:", userError);
+                setMessage(`Erro ao criar jogador: ${userError.message}`);
+                return;
+            }
 
-		if (error) {
-			setMessage("Erro ao iniciar o jogo.");
-			console.error("Erro ao iniciar o jogo:", error.message);
-		}
-	};
+            if (!user) {
+                setMessage("Erro ao criar jogador: nenhum dado retornado.");
+                return;
+            }
 
-	const calculateCountdown = (startTime) => {
-		const endTime = new Date(startTime);
-		endTime.setSeconds(endTime.getSeconds() + 5);
-		const interval = setInterval(() => {
-			const now = new Date();
-			const timeLeft = Math.max(0, Math.ceil((endTime - now) / 1000));
-			setCountdown(timeLeft);
-			if (timeLeft === 0) {
-				clearInterval(interval);
-				setMessage("Jogo iniciado!");
-				return router.push("/home");
-			}
-		}, 1000);
-	};
+            setGamePlayer(user);
+            const { data: sessions, error: sessionsError } = await supabase
+                .from("sessions")
+                .select("*")
+                .eq("is_active", false)
+                .is("player2_id", null);
 
-	const handleChange = (value, index) => {
-		if (value.length > 1) return;
+            if (sessionsError) {
+                console.error("Erro ao buscar sessões:", sessionsError);
+                setMessage("Erro ao buscar sessões.");
+                return;
+            }
 
-		const newPin = [...pin];
-		newPin[index] = value;
-		setPin(newPin);
+            let session;
+            if (sessions.length === 0) {
+                const { data: newSession, error: newSessionError } = await supabase
+                    .from("sessions")
+                    .insert([{ player1_id: user.id, is_active: false }])
+                    .select()
+                    .single();
 
-		if (value !== "" && index < 5) {
-			inputRefs.current[index + 1]?.focus();
-		}
+                if (newSessionError) {
+                    console.error("Erro ao criar a sessão:", newSessionError);
+                    setMessage("Erro ao criar a sessão.");
+                    return;
+                }
 
-		if (newPin.every((val) => val !== "")) {
-			authenticatePin(newPin.join(""));
-		}
-	};
+                session = newSession;
+                setWaiting(true); // Inicia a animação
+            } else {
+                session = sessions[0];
+                const challenge = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
 
-	async function authenticatePin(completePin) {
-		const { data: user, error } = await supabase
-			.from("users")
-			.select("*")
-			.eq("pin", completePin)
-			.single();
+                const { data: updatedSession, error: updateSessionError } = await supabase
+                    .from("sessions")
+                    .update({
+                        player2_id: user.id,
+                        is_active: true,
+                        game_challenge: challenge,
+                        game_started: sessions.length > 0,
+                        countdown_start_time: sessions.length > 0 ? new Date().toISOString() : null,
+                    })
+                    .eq("id", session.id)
+                    .select()
+                    .single();
 
-		if (error || !user) {
-			setMessage("PIN inválido, tente de novo.");
-			return;
-		}
-		setGamePlayer(user);
+                if (updateSessionError) {
+                    console.error("Erro ao entrar na sessão:", updateSessionError);
+                    setMessage("Erro ao entrar na sessão.");
+                    return;
+                }
 
-		setMessage(`Welcome, ${user.name}!`);
-		const { data: existingSession, error: existingSessionError } =
-			await supabase
-				.from("sessions")
-				.select("*")
-				.eq("is_active", false)
-				.or("player1_id.is.null,player2_id.is.null")
-				.single();
+                session = updatedSession;
+                setMessage("Sessão iniciada, ambos jogadores estão conectados!");
+            }
 
-		if (existingSessionError || !existingSession) {
-			const { _, error: newSessionError } = await supabase
-				.from("sessions")
-				.insert([{ player1_id: user.id, is_active: false }])
-				.single();
+            setGameSession(session);
+            fetchPlayerNames(session);
+            if (session.game_started) {
+                calculateCountdown(session.countdown_start_time);
+            }
+        } catch (err) {
+            console.error("Erro inesperado:", err);
+            setMessage(`Erro inesperado: ${err.message}`);
+        }
+    };
 
-			if (newSessionError) {
-				return setMessage("Erro ao criar a sessão.");
-			}
-		} else {
-			const challenge = CHALLENGES.map((value) => ({
-				value,
-				sort: Math.random(),
-			}))
-				.sort((a, b) => a.sort - b.sort)
-				.map(({ value }) => value)
-				.at(Math.floor(Math.random() * 3));
-			const { data: updatedSession, error: updateSessionError } = await supabase
-				.from("sessions")
-				.update({
-					player2_id: user.id,
-					is_active: true,
-					game_challenge: challenge,
-				})
-				.eq("id", existingSession.id)
-				.single();
+    const calculateCountdown = (startTime) => {
+        const endTime = new Date(startTime);
+        endTime.setSeconds(endTime.getSeconds() + 10);
+        const interval = setInterval(() => {
+            const now = new Date();
+            const timeLeft = Math.max(0, Math.ceil((endTime - now) / 1000));
+            setCountdown(timeLeft);
+            if (timeLeft === 0) {
+                clearInterval(interval);
+                setMessage("Jogo iniciado!");
+                return router.push("/home");
+            }
+        }, 1000);
+    };
 
-			if (updateSessionError) {
-				return setMessage("Erro ao entrar na sessão.");
-			}
-
-			setGameSession(updatedSession);
-		}
-	}
-
-	const handleFocus = (index) => {
-		setFocusedInput(index);
-		setIsKeyboardVisible(true);
-	};
-
-	return (
-		<div className="flex items-center justify-center min-h-screen bg-blue-900 text-white flex-col">
-			<h1 className="text-7xl my-10 font-bold text-center">
-				Desafio Prudential
-			</h1>
-			<div className="w-full max-w-md p-8 space-y-6 bg-blue-800 rounded-lg shadow-lg">
-				{session && (
-					<div className="mt-6 space-y-4 text-center flex justify-center flex-col">
-						<p>Jogador 1: {player1Name || session.player1_id}</p>
-						<p>Jogador 2: {player2Name || session.player2_id}</p>
-						<p className="mt-6 text-3xl">
-							Seu desafio é: {session.game_challenge}
-						</p>
-					</div>
-				)}
-				<h1 className="flex justify-center mt-8 space-x-2 text-white text-5xl font-bold">
-					Insira seu PIN
-				</h1>
-				<div className="flex justify-center mt-8 space-x-2 text-black">
-					{pin.map((digit, index) => (
-						<input
-							key={index}
-							ref={(el) => (inputRefs.current[index] = el)}
-							type="text"
-							maxLength="1"
-							value={digit}
-							onChange={(e) => handleChange(e.target.value, index)}
-							onFocus={() => handleFocus(index)}
-							className="w-12 h-12 text-xl text-center border-2 border-blue-300 rounded-md focus:outline-none focus:border-blue-500"
-						/>
-					))}
-				</div>
-				{message && <p className="mt-4 text-center text-white">{message}</p>}
-				{countdown !== null && (
-					<p className="mt-4 text-center">Contagem regressiva: {countdown}</p>
-				)}
-				{session &&
-					session.player1_id &&
-					session.player2_id &&
-					!gameStarted && (
-						<button
-							onClick={startGame}
-							className="w-full p-4 text-xl font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500"
-						>
-							Começar
-						</button>
-					)}
-				<VirtualKeyboard
-					isVisible={isKeyboardVisible}
-					onChange={(value) => handleChange(value, focusedInput)}
-					focusedInput={focusedInput}
-				/>
-			</div>
-		</div>
-	);
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-blue-900 text-white flex-col">
+            <h1 className="text-7xl my-10 font-bold text-center">
+                Desafio Prudential
+            </h1>
+            <div className="w-full max-w-md p-8 space-y-6 bg-blue-800 rounded-lg shadow-lg">
+                {session && (
+                    <div className="mt-6 space-y-4 text-center flex justify-center flex-col">
+                        <p>Jogador 1: {player1Name || session.player1_id}</p>
+                        <p>Jogador 2: {player2Name || session.player2_id}</p>
+                        <p className="mt-6 text-3xl">
+                            Seu desafio é: {session.game_challenge}
+                        </p>
+                    </div>
+                )}
+                {message && <p className="mt-4 text-center text-white">{message}</p>}
+                {countdown !== null && (
+                    <p className="mt-4 text-center">Contagem regressiva: {countdown}</p>
+                )}
+                <button
+                    onClick={startGame}
+                    className="w-full p-4 text-xl font-bold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500"
+                >
+                    Começar
+                </button>
+            </div>
+        </div>
+    );
 }
