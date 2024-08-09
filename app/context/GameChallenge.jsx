@@ -56,7 +56,7 @@ export function GameContextProvider({ children }) {
 							setChallenge("");
 							setPlayer({});
 							setSession(null);
-						}, 5000);
+						}, 5000); // 5 segundos
 					}
 				},
 			)
@@ -89,7 +89,7 @@ export function GameContextProvider({ children }) {
 			setChallenge("");
 			setPlayer({});
 			setSession(null);
-		}, 5000);
+		}, 5000); // 5 segundos
 	}
 
 	return (

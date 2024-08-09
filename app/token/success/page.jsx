@@ -18,12 +18,12 @@ export default function SuccessPage() {
 			case "endereco":
 				setTimeout(() => {
 					router.push("/resumo?tab=endereco");
-				}, 5000);
+				}, 3000);
 				break;
 			case "beneficiario":
 				setTimeout(() => {
 					router.push("/resumo?tab=beneficiarios");
-				}, 5000);
+				}, 3000);
 				break;
 			default:
 				finishGame();

@@ -7,7 +7,7 @@ import { useGame } from "@/app/hooks/useGame";
 import { CHALLENGES } from "../../data/challenges";
 import { Spinner } from "@/app/components/Spinner";
 import { StartIcon } from "./StartIcon";
-import PrudentialLogo from "./Prudential-Logo.png";
+import PrudentialLogo from "../../assets/Prudential-Logo.png";
 import Image from "next/image";
 import { RunnerIcon } from "./RunnerIcon";
 

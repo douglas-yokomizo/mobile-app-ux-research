@@ -1,4 +1,4 @@
-import Auth from "./(auth)/auth/page.js";
+import Auth from "./(auth)/auth/page.jsx";
 
 export default function Main() {
 	return (

@@ -175,7 +175,7 @@ export default function Contatos() {
 										</div>
 										<Button
 											text={"Salvar"}
-											onClick={() => router.push(`${pathname}/token`)}
+											onClick={() => router.push("/token")}
 										/>
 										<Button text={"Cancelar"} variant="secondary" />
 									</form>
