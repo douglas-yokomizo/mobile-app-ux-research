@@ -2,7 +2,7 @@
 
 import { createContext, useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export const GameContext = createContext();
 
@@ -38,7 +38,6 @@ export function GameContextProvider({ children }) {
 		localStorage.setItem("challenge", challenge);
 	}
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const channel = supabase
 			.channel("public:session")
@@ -51,11 +50,13 @@ export function GameContextProvider({ children }) {
 				},
 				({ new: session }) => {
 					if (session.winner !== null && session.winner !== player.id) {
-						localStorage.clear();
-						setChallenge("");
-						setPlayer({});
-						setSession(null);
-						return router.replace("/");
+						setTimeout(() => {
+							router.replace("/loser");
+							localStorage.clear();
+							setChallenge("");
+							setPlayer({});
+							setSession(null);
+						}, 5000);
 					}
 				},
 			)
@@ -64,7 +65,7 @@ export function GameContextProvider({ children }) {
 		return () => {
 			supabase.removeChannel(channel);
 		};
-	}, []);
+	});
 
 	function setGameSession(session) {
 		setSession(session);
@@ -83,12 +84,12 @@ export function GameContextProvider({ children }) {
 			.update({ winner: player.id })
 			.eq("id", session.id);
 		setTimeout(() => {
-			router.replace("/");
+			router.replace("/winner");
 			localStorage.clear();
 			setChallenge("");
 			setPlayer({});
 			setSession(null);
-		}, 10000);
+		}, 5000);
 	}
 
 	return (

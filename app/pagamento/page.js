@@ -11,7 +11,12 @@ import extrato from "../assets/pagamento/extrato.svg";
 import HeaderNavigation from "../components/HeaderNavigation";
 import data from "../data/methodsPayment";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import {
+	ACESSE_SEU_EXTRATO_DE_NOVEMBRO,
+	PAGUE_UMA_APOLICE_EM_ATRASO,
+} from "../data/challenges";
+import { useGame } from "../hooks/useGame";
 
 export default function Pagamento() {
 	const fadeInVariants = {
@@ -24,6 +29,7 @@ export default function Pagamento() {
 		}),
 	};
 	const router = useRouter();
+	const { challenge } = useGame();
 	return (
 		<main className="">
 			<HeaderNavigation title="Dados de pagamento" />
@@ -151,7 +157,10 @@ export default function Pagamento() {
 									))}
 								</div>
 								<div>
-									<Link href={`/paymentMethodDetail?id=${item.id}`}>
+									<Link
+										href={item.name === "Mastercard" ? item.link : "#"}
+										scroll={false}
+									>
 										<p className="text-blue-600 mb-2 flex items-center gap-2">
 											Mais detalhes{" "}
 											<Image
@@ -216,9 +225,14 @@ export default function Pagamento() {
 
 					<p className="text-gray-500 text-4xl mb-2">Mastercard crédito</p>
 					<p className="text-gray-500 text-4xl">**** ***** **** 8842</p>
-					<p
+					<Link
 						className="text-blue-600 mb-2 flex items-center gap-2 text-4xl mt-6"
-						onClick={() => router.push("/pagamento/pagamento-detalhes")}
+						href={
+							challenge === PAGUE_UMA_APOLICE_EM_ATRASO
+								? "/pagamento/pagamento-detalhes"
+								: "#"
+						}
+						scroll={challenge === PAGUE_UMA_APOLICE_EM_ATRASO}
 					>
 						{" "}
 						Detalhes do Pagamento{" "}
@@ -228,7 +242,7 @@ export default function Pagamento() {
 							width={50}
 							className="object-contain"
 						/>{" "}
-					</p>
+					</Link>
 				</section>
 
 				<section className="my-12">
@@ -303,7 +317,14 @@ export default function Pagamento() {
 			</motion.section>
 
 			<div className="flex justify-center px-12 pb-8">
-				<Link href={"/extratoCompleto"}>
+				<Link
+					href={
+						challenge === ACESSE_SEU_EXTRATO_DE_NOVEMBRO
+							? "/extratoCompleto"
+							: "#"
+					}
+					scroll={challenge === ACESSE_SEU_EXTRATO_DE_NOVEMBRO}
+				>
 					<motion.button
 						initial="hidden"
 						animate="visible"

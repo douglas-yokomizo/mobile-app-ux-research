@@ -29,10 +29,10 @@ export default function PaymentMethodDetail() {
 	const item = data.find((item) => item.id.toString() === id);
 
 	useEffect(() => {
-		if ((item.id = 1)) {
+		if (item.id === 1) {
 			finishGame();
 		}
-	});
+	}, []);
 
 	if (!item) {
 		return (

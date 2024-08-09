@@ -11,6 +11,18 @@ import { useKeenSlider } from "keen-slider/react";
 import { useRouter } from "next/navigation";
 import dados from "../data/extratoDetails";
 import { useGame } from "../hooks/useGame";
+import {
+	ACESSE_AS_INFORMACOES_DOS_SEUS_LIFE_PLANNERS,
+	ACESSE_SEU_EXTRATO_DE_NOVEMBRO,
+	ADICIONE_UM_NOVO_EMAIL,
+	ADICIONE_UM_NOVO_ENDERECO,
+	EDITE_OS_DADOS_DE_UM_BENEFICIARIO,
+	PAGUE_UMA_APOLICE_EM_ATRASO,
+	RESGATE_UM_VOUCHER_UBER_NO_FULLY,
+	VEJA_AS_CONDICOES_GERAIS_DA_SUA_APOLICE_FAMILIA,
+	VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO,
+	VEJA_SUAS_COBERTURAS_DE_MORTE,
+} from "../data/challenges";
 
 const checkForLatePayments = () => {
 	return dados.some((item) => item.status === "Em Atraso");
@@ -64,7 +76,7 @@ export default function Home() {
 								width={120}
 							/>
 							<div className="font-bold">
-								<h2 className="text-4xl mb-4">Olá, {player.name}</h2>
+								<h2 className="text-4xl mb-4">Olá, Fulano</h2>
 								<h3 className="text-2xl flex items-center gap-2">
 									Meu perfil{" "}
 									<Image
@@ -87,7 +99,7 @@ export default function Home() {
 							</span>
 						</div>
 					</header>
-					{hasLatePayments && challenge !== "Pagamento em atraso" && (
+					{hasLatePayments && challenge === PAGUE_UMA_APOLICE_EM_ATRASO && (
 						<div className=" relative bg-yellow-caution rounded-3xl text-black text-3xl p-10">
 							<div className="flex">
 								<Image
@@ -192,7 +204,11 @@ export default function Home() {
 								</div>
 							</div>
 							<Link
-								href={"/policies"}
+								href={
+									challenge === VEJA_AS_CONDICOES_GERAIS_DA_SUA_APOLICE_FAMILIA
+										? "/policies"
+										: "#"
+								}
 								className="font-bold text-blue-text flex items-center text-3xl gap-2"
 							>
 								Detalhes da apólice{" "}
@@ -265,7 +281,14 @@ export default function Home() {
 							variants={fadeInVariants}
 						>
 							<Link
-								href={"/pagamento"}
+								href={
+									challenge === PAGUE_UMA_APOLICE_EM_ATRASO ||
+									challenge === ACESSE_SEU_EXTRATO_DE_NOVEMBRO ||
+									challenge ===
+										VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO
+										? "/pagamento"
+										: "#"
+								}
 								className="text-center flex flex-col items-center justify-center max-w-fit"
 							>
 								<div className="bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center">
@@ -306,7 +329,11 @@ export default function Home() {
 							variants={fadeInVariants}
 						>
 							<Link
-								href={"/beneficiaries"}
+								href={
+									challenge === EDITE_OS_DADOS_DE_UM_BENEFICIARIO
+										? "/beneficiaries"
+										: "#"
+								}
 								className="text-center flex flex-col items-center justify-center max-w-fit"
 							>
 								<div className="bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center">
@@ -328,7 +355,11 @@ export default function Home() {
 							variants={fadeInVariants}
 						>
 							<Link
-								href={"/insurance-coverages"}
+								href={
+									challenge === VEJA_SUAS_COBERTURAS_DE_MORTE
+										? "/insurance-coverages"
+										: "#"
+								}
 								className="text-center flex flex-col items-center justify-center max-w-fit"
 							>
 								<div className="bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center">
@@ -370,7 +401,12 @@ export default function Home() {
 						>
 							<Link
 								className="text-center flex flex-col items-center justify-center max-w-fit"
-								href={"/dados-cadastrais"}
+								href={
+									challenge === ADICIONE_UM_NOVO_EMAIL ||
+									challenge === ADICIONE_UM_NOVO_ENDERECO
+										? "/dados-cadastrais"
+										: "#"
+								}
 							>
 								<div className="bg-blue-200 rounded-2xl h-32 w-[16rem] flex justify-center">
 									<Image
@@ -454,7 +490,11 @@ export default function Home() {
 							</div>
 						</div>
 						<Link
-							href={"/rewards"}
+							href={
+								challenge === RESGATE_UM_VOUCHER_UBER_NO_FULLY
+									? "/rewards"
+									: "#"
+							}
 							className="text-blue-500 font-semibold flex items-center w-full justify-center border-2 border-blue-500 text-3xl p-4 rounded-full gap-4"
 						>
 							<Image src={homeAssets.medal} alt="medal icon" className="w-8" />
@@ -605,9 +645,18 @@ export default function Home() {
 									/>
 								</div>
 								<div className="text-3xl font-semibold text-blue-600 flex items-center gap-4">
-									<button onClick={() => router.push("/brokers")} type="button">
+									<Link
+										href={
+											challenge === ACESSE_AS_INFORMACOES_DOS_SEUS_LIFE_PLANNERS
+												? "/brokers"
+												: "#"
+										}
+										scroll={
+											challenge === ACESSE_AS_INFORMACOES_DOS_SEUS_LIFE_PLANNERS
+										}
+									>
 										Mais detalhes
-									</button>
+									</Link>
 									<Image
 										src={homeAssets.arrow}
 										alt="arrow icon"

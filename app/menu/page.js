@@ -16,6 +16,16 @@ import pagamento from "../assets/menu/pagamento.svg";
 import FooterNavigation from "../components/FooterNavigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useGame } from "../hooks/useGame";
+import {
+	ACESSE_SEU_EXTRATO_DE_NOVEMBRO,
+	ADICIONE_UM_NOVO_EMAIL,
+	ADICIONE_UM_NOVO_ENDERECO,
+	EDITE_OS_DADOS_DE_UM_BENEFICIARIO,
+	PAGUE_UMA_APOLICE_EM_ATRASO,
+	VEJA_AS_CONDICOES_GERAIS_DA_SUA_APOLICE_FAMILIA,
+	VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO,
+} from "../data/challenges";
 
 export default function Menu() {
 	const fadeInVariants = {
@@ -27,6 +37,8 @@ export default function Menu() {
 			},
 		}),
 	};
+
+	const { challenge } = useGame();
 
 	return (
 		<main className="">
@@ -59,20 +71,47 @@ export default function Menu() {
 							icon: acompanharSolucoes,
 							text: "Acompanhar solicitação",
 						},
-						{ href: "/policies", icon: apolices, text: "Apólices" },
+						{
+							href:
+								challenge === VEJA_AS_CONDICOES_GERAIS_DA_SUA_APOLICE_FAMILIA
+									? "/policies"
+									: "#",
+							icon: apolices,
+							text: "Apólices",
+						},
 						{ href: "/", icon: atendimento, text: "Atendimento" },
-						{ href: "/", icon: beneficiarios, text: "Beneficiários" },
+						{
+							href:
+								challenge === EDITE_OS_DADOS_DE_UM_BENEFICIARIO
+									? "/beneficiaries"
+									: "#",
+							icon: beneficiarios,
+							text: "Beneficiários",
+						},
 						{
 							href: "/",
 							icon: compartilhar,
 							text: "Compartilhar e gerenciar acessos",
 						},
 						{
-							href: "/dados-cadastrais",
+							href:
+								challenge === ADICIONE_UM_NOVO_EMAIL ||
+								challenge === ADICIONE_UM_NOVO_ENDERECO
+									? "/dados-cadastrais"
+									: "#",
 							icon: dados,
 							text: "Dados cadastrais",
 						},
-						{ href: "/pagamento", icon: pagamento, text: "Pagamento" },
+						{
+							href:
+								challenge === PAGUE_UMA_APOLICE_EM_ATRASO ||
+								challenge === ACESSE_SEU_EXTRATO_DE_NOVEMBRO ||
+								challenge === VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO
+									? "/pagamento"
+									: "#",
+							icon: pagamento,
+							text: "Pagamento",
+						},
 					].map((item, index) => (
 						<motion.li
 							key={item.text}

@@ -6,6 +6,8 @@ import Image from "next/image";
 import dados from "../data/extratoDetails";
 import arrowUp from "../assets/extrato/arrow-up.svg";
 import { motion } from "framer-motion";
+import { useGame } from "../hooks/useGame";
+import { useEffect } from "react";
 
 const fadeInVariants = {
 	hidden: { opacity: 0 },
@@ -24,10 +26,7 @@ export default function ExtratoDetalhes() {
 
 	useEffect(() => {
 		if (mes === "Novembro") {
-			const encontrouExtrato = extrato.some((item) => item.mes === "Novembro");
-			if (encontrouExtrato) {
-				finishGame();
-			}
+			finishGame();
 		}
 	}, [mes, finishGame]);
 
