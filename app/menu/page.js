@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import avatar from "../assets/edit-avatar.png";
 import arrow from "../assets/menu/arrow.svg";
 import sair from "../assets/menu/sair.svg";
 
@@ -12,6 +11,7 @@ import beneficiarios from "../assets/menu/beneficiarios.svg";
 import compartilhar from "../assets/menu/compartilhar-gerenciar.svg";
 import dados from "../assets/menu/dados-cadastrais.svg";
 import pagamento from "../assets/menu/pagamento.svg";
+import avatar1 from "./Avatar.svg";
 
 import FooterNavigation from "../components/FooterNavigation";
 import Link from "next/link";
@@ -54,7 +54,8 @@ export default function Menu() {
 					<h1 className="p-12 text-5xl text-white">x</h1>
 				</div>
 				<div className="px-5 pb-4 flex items-center gap-4">
-					<div>
+					<Image src={avatar1} height={150} />
+					<div className="space-y-3">
 						<p className="text-white text-4xl">João da Costa Rodrigues</p>
 						{/* TODO: puxar o nome no supabase do usuario */}
 						<p className="text-white text-3xl">182.475.858-99</p>
@@ -65,9 +66,9 @@ export default function Menu() {
 			<nav>
 				<ul className="flex flex-col p-12">
 					{[
-						{ href: "/", icon: acionarSeguro, text: "Acionar Seguro" },
+						{ href: "#", icon: acionarSeguro, text: "Acionar Seguro" },
 						{
-							href: "/",
+							href: "#",
 							icon: acompanharSolucoes,
 							text: "Acompanhar solicitação",
 						},
@@ -79,7 +80,7 @@ export default function Menu() {
 							icon: apolices,
 							text: "Apólices",
 						},
-						{ href: "/", icon: atendimento, text: "Atendimento" },
+						{ href: "#", icon: atendimento, text: "Atendimento" },
 						{
 							href:
 								challenge === EDITE_OS_DADOS_DE_UM_BENEFICIARIO
@@ -89,7 +90,7 @@ export default function Menu() {
 							text: "Beneficiários",
 						},
 						{
-							href: "/",
+							href: "#",
 							icon: compartilhar,
 							text: "Compartilhar e gerenciar acessos",
 						},

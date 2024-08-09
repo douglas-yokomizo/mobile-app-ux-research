@@ -23,6 +23,7 @@ import {
 	VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO,
 	VEJA_SUAS_COBERTURAS_DE_MORTE,
 } from "../data/challenges";
+import { cn } from "../lib/utils";
 
 const checkForLatePayments = () => {
 	return dados.some((item) => item.status === "Em Atraso");
@@ -31,6 +32,7 @@ const checkForLatePayments = () => {
 export default function Home() {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const contentRef = useRef(null);
+	const [challenges, setChallenges] = useState();
 	const router = useRouter();
 	const [sliderRef] = useKeenSlider({
 		loop: true,
@@ -55,7 +57,11 @@ export default function Home() {
 			},
 		}),
 	};
-	const { challenge, player } = useGame();
+	const { challenge } = useGame();
+
+	useEffect(() => {
+		setChallenges(challenge);
+	}, [challenge]);
 
 	return (
 		<>
@@ -76,7 +82,7 @@ export default function Home() {
 								width={120}
 							/>
 							<div className="font-bold">
-								<h2 className="text-4xl mb-4">Olá, Fulano</h2>
+								<h2 className="text-4xl mb-4">Olá, João Pedro</h2>
 								<h3 className="text-2xl flex items-center gap-2">
 									Meu perfil{" "}
 									<Image
@@ -209,7 +215,15 @@ export default function Home() {
 										? "/policies"
 										: "#"
 								}
-								className="font-bold text-blue-text flex items-center text-3xl gap-2"
+								className={cn(
+									"font-bold text-blue-text flex items-center text-3xl gap-2",
+									challenges !==
+										VEJA_AS_CONDICOES_GERAIS_DA_SUA_APOLICE_FAMILIA &&
+										"active:text-red-600 transition-all ease-in-out",
+								)}
+								scroll={
+									challenge === VEJA_AS_CONDICOES_GERAIS_DA_SUA_APOLICE_FAMILIA
+								}
 							>
 								Detalhes da apólice{" "}
 								<Image src={homeAssets.arrow} alt="arrow icon" height={30} />
@@ -280,27 +294,44 @@ export default function Home() {
 							custom={8}
 							variants={fadeInVariants}
 						>
-							<Link
-								href={
-									challenge === PAGUE_UMA_APOLICE_EM_ATRASO ||
-									challenge === ACESSE_SEU_EXTRATO_DE_NOVEMBRO ||
-									challenge ===
-										VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO
-										? "/pagamento"
-										: "#"
-								}
-								className="text-center flex flex-col items-center justify-center max-w-fit"
+							<div
+								// biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+								className={` text-center flex flex-col items-center justify-center max-w-fit `}
 							>
-								<div className="bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center">
+								<Link
+									href={
+										challenge === PAGUE_UMA_APOLICE_EM_ATRASO ||
+										challenge === ACESSE_SEU_EXTRATO_DE_NOVEMBRO ||
+										challenge ===
+											VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO
+											? "/pagamento"
+											: "#"
+									}
+									id="pagamento"
+									className={`bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center  ${
+										challenges === PAGUE_UMA_APOLICE_EM_ATRASO ||
+										challenges === ACESSE_SEU_EXTRATO_DE_NOVEMBRO ||
+										challenges ===
+											VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO
+											? " border-transparent active:border-transparent"
+											: "active:border-red-900 transition-all ease-in-out border-4 border-transparent"
+									}`}
+									scroll={
+										challenge === PAGUE_UMA_APOLICE_EM_ATRASO ||
+										challenge === ACESSE_SEU_EXTRATO_DE_NOVEMBRO ||
+										challenge ===
+											VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO
+									}
+								>
 									<Image
 										src={homeAssets.coin}
 										alt="Coin icon"
 										height={48}
 										width={48}
 									/>
-								</div>
+								</Link>
 								<p>Pagamento</p>
-							</Link>
+							</div>
 						</motion.li>
 						<motion.li
 							className="keen-slider__slide"
@@ -328,24 +359,25 @@ export default function Home() {
 							custom={10}
 							variants={fadeInVariants}
 						>
-							<Link
-								href={
-									challenge === EDITE_OS_DADOS_DE_UM_BENEFICIARIO
-										? "/beneficiaries"
-										: "#"
-								}
-								className="text-center flex flex-col items-center justify-center max-w-fit"
-							>
-								<div className="bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center">
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<Link
+									href={
+										challenge === EDITE_OS_DADOS_DE_UM_BENEFICIARIO
+											? "/beneficiaries"
+											: "#"
+									}
+									className={`bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === EDITE_OS_DADOS_DE_UM_BENEFICIARIO ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
+									scroll={challenge === EDITE_OS_DADOS_DE_UM_BENEFICIARIO}
+								>
 									<Image
 										src={homeAssets.peopleGroup}
 										alt="shield checked icon"
 										height={48}
 										width={48}
 									/>
-								</div>
+								</Link>
 								<p>Beneficiários</p>
-							</Link>
+							</div>
 						</motion.li>
 						<motion.li
 							className="keen-slider__slide"
@@ -354,24 +386,25 @@ export default function Home() {
 							custom={10}
 							variants={fadeInVariants}
 						>
-							<Link
-								href={
-									challenge === VEJA_SUAS_COBERTURAS_DE_MORTE
-										? "/insurance-coverages"
-										: "#"
-								}
-								className="text-center flex flex-col items-center justify-center max-w-fit"
-							>
-								<div className="bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center">
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<Link
+									href={
+										challenge === VEJA_SUAS_COBERTURAS_DE_MORTE
+											? "/insurance-coverages"
+											: "#"
+									}
+									className={`bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === VEJA_SUAS_COBERTURAS_DE_MORTE ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
+									scroll={challenge === VEJA_SUAS_COBERTURAS_DE_MORTE}
+								>
 									<Image
 										src={homeAssets.heartShield}
 										alt="shield checked icon"
 										height={48}
 										width={48}
 									/>
-								</div>
+								</Link>
 								<p>Coberturas</p>
-							</Link>
+							</div>
 						</motion.li>
 						<motion.li
 							className="keen-slider__slide"
@@ -399,29 +432,33 @@ export default function Home() {
 							custom={11}
 							variants={fadeInVariants}
 						>
-							<Link
-								className="text-center flex flex-col items-center justify-center max-w-fit"
-								href={
-									challenge === ADICIONE_UM_NOVO_EMAIL ||
-									challenge === ADICIONE_UM_NOVO_ENDERECO
-										? "/dados-cadastrais"
-										: "#"
-								}
-							>
-								<div className="bg-blue-200 rounded-2xl h-32 w-[16rem] flex justify-center">
+							<div className="text-center flex flex-col items-center justify-center max-w-fit">
+								<Link
+									href={
+										challenge === ADICIONE_UM_NOVO_EMAIL ||
+										challenge === ADICIONE_UM_NOVO_ENDERECO
+											? "/dados-cadastrais"
+											: "#"
+									}
+									className={`bg-blue-200 rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === ADICIONE_UM_NOVO_EMAIL || challenges === ADICIONE_UM_NOVO_ENDERECO ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
+									scroll={
+										challenge === ADICIONE_UM_NOVO_EMAIL ||
+										challenge === ADICIONE_UM_NOVO_ENDERECO
+									}
+								>
 									<Image
 										src={homeAssets.dataPerson}
 										alt="resume icon"
 										height={48}
 										width={48}
 									/>
-								</div>
+								</Link>
 								<p>
 									Dados
 									<br />
 									cadastrais
 								</p>
-							</Link>
+							</div>
 						</motion.li>
 					</ul>
 				</motion.section>
@@ -495,7 +532,8 @@ export default function Home() {
 									? "/rewards"
 									: "#"
 							}
-							className="text-blue-500 font-semibold flex items-center w-full justify-center border-2 border-blue-500 text-3xl p-4 rounded-full gap-4"
+							className={`text-blue-500 font-semibold flex items-center w-full justify-center border-4 border-blue-500 text-3xl p-4 rounded-full gap-4 ${challenges === RESGATE_UM_VOUCHER_UBER_NO_FULLY ? "" : "active:border-red-900  ease-in-out transition-all active:border-4 border-blue-500"}`}
+							scroll={challenge === RESGATE_UM_VOUCHER_UBER_NO_FULLY}
 						>
 							<Image src={homeAssets.medal} alt="medal icon" className="w-8" />
 							<span>Resgatar Recompensas</span>
@@ -644,7 +682,9 @@ export default function Home() {
 										className="bg-blue-50 w-32 h-32 rounded-full p-8"
 									/>
 								</div>
-								<div className="text-3xl font-semibold text-blue-600 flex items-center gap-4">
+								<div
+									className={`text-3xl font-semibold text-blue-600 flex items-center gap-4 ${challenges === ACESSE_AS_INFORMACOES_DOS_SEUS_LIFE_PLANNERS ? "text-blue-600 " : "active:text-red-600 transition-all ease-in-out"}`}
+								>
 									<Link
 										href={
 											challenge === ACESSE_AS_INFORMACOES_DOS_SEUS_LIFE_PLANNERS

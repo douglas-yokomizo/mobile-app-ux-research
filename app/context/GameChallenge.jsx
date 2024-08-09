@@ -44,18 +44,18 @@ export function GameContextProvider({ children }) {
 			.on(
 				"postgres_changes",
 				{
-					event: "*",
+					event: "UPDATE",
 					schema: "public",
 					table: "sessions",
 				},
 				({ new: session }) => {
 					if (session.winner !== null && session.winner !== player.id) {
 						setTimeout(() => {
-							router.replace("/loser");
 							localStorage.clear();
 							setChallenge("");
 							setPlayer({});
 							setSession(null);
+							router.replace("/loser");
 						}, 5000); // 5 segundos
 					}
 				},
@@ -79,17 +79,22 @@ export function GameContextProvider({ children }) {
 	}
 
 	async function finishGame() {
-		await supabase
+		if (!session) {
+			return;
+		}
+		const { error } = await supabase
 			.from("sessions")
 			.update({ winner: player.id })
 			.eq("id", session.id);
-		setTimeout(() => {
-			router.replace("/winner");
-			localStorage.clear();
-			setChallenge("");
-			setPlayer({});
-			setSession(null);
-		}, 5000); // 5 segundos
+		if (!error) {
+			setTimeout(() => {
+				localStorage.clear();
+				setChallenge("");
+				setPlayer({});
+				setSession(null);
+				router.replace("/winner");
+			}, 5000);
+		}
 	}
 
 	return (

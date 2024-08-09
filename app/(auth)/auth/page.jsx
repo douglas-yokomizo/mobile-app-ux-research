@@ -28,7 +28,6 @@ export default function Auth() {
 				"postgres_changes",
 				{ event: "*", schema: "public", table: "sessions" },
 				async (payload) => {
-					console.log("Payload received:", payload);
 					const newSession = payload.new;
 					if (newSession.is_active) {
 						setGameSession(newSession);
@@ -47,21 +46,41 @@ export default function Auth() {
 	}, []);
 
 	useEffect(() => {
-		if (gameStarted) {
-			let index = 0;
-			const messages = [
-				"O desafio vai começar em.",
-				"O desafio vai começar em..",
-				"O desafio vai começar em...",
-			];
-			const interval = setInterval(() => {
-				setMessage(messages[index]);
-				index = (index + 1) % messages.length;
-			}, 1000);
+		if (waiting) {
+			const timeout = setTimeout(
+				async () => {
+					const { data: sessionData, error: sessionError } = await supabase
+						.from("sessions")
+						.select("*")
+						.eq("id", session.id)
+						.single();
 
-			return () => clearInterval(interval);
+					if (sessionError) {
+						console.error("Erro ao verificar sessão:", sessionError);
+						return;
+					}
+
+					if (!sessionData.player2_id) {
+						const { error: deleteError } = await supabase
+							.from("sessions")
+							.delete()
+							.eq("id", session.id);
+
+						if (deleteError) {
+							console.error("Erro ao deletar sessão:", deleteError);
+						} else {
+							setWaiting(false);
+							setGameSession(null);
+							console.log("Sessão deletada devido à ausência do jogador 2.");
+						}
+					}
+				},
+				1 * 60 * 1000,
+			); // 1 minuto
+
+			return () => clearTimeout(timeout);
 		}
-	}, [gameStarted]);
+	}, [waiting]);
 
 	const startGame = async () => {
 		try {
@@ -148,12 +167,25 @@ export default function Auth() {
 		if (gameStarted) {
 			const timer =
 				countdown > 0 && setInterval(() => setCountdown(countdown - 1), 1000);
+			let index = 0;
+			const messages = [
+				"O desafio vai começar em.",
+				"O desafio vai começar em..",
+				"O desafio vai começar em...",
+			];
+			const interval = setInterval(() => {
+				setMessage(messages[index]);
+				index = (index + 1) % messages.length;
+			}, 1000);
 			if (countdown === 0) {
 				clearInterval(timer);
 				return window.location.replace("/home");
 			}
 
-			return () => clearInterval(timer);
+			return () => {
+				clearInterval(timer);
+				clearInterval(interval);
+			};
 		}
 	}, [gameStarted, countdown]);
 
