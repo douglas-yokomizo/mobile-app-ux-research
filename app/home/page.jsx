@@ -267,7 +267,7 @@ export default function Home() {
 					variants={fadeInVariants}
 				>
 					<h2 className="mt-0 font-bold text-5xl mb-6">Acesso Rápido</h2>
-					<ul className="font-semibold keen-slider">
+					<ul className="font-semibold keen-slider text-xl">
 						<motion.li
 							className="keen-slider__slide"
 							initial="hidden"
@@ -276,7 +276,7 @@ export default function Home() {
 							variants={fadeInVariants}
 						>
 							<div className="text-center flex flex-col items-center justify-center max-w-fit">
-								<div className="bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center">
+								<div className="bg-[#EEF5FF]  mb-2 rounded-2xl h-32 w-[16rem] flex justify-center">
 									<Image
 										src={homeAssets.guardian}
 										alt="shield and sword icon"
@@ -308,7 +308,7 @@ export default function Home() {
 											: "#"
 									}
 									id="pagamento"
-									className={`bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center  ${
+									className={`bg-[#EEF5FF] mb-2   rounded-2xl h-32 w-[16rem] flex justify-center  ${
 										challenges === PAGUE_UMA_APOLICE_EM_ATRASO ||
 										challenges === ACESSE_SEU_EXTRATO_DE_NOVEMBRO ||
 										challenges ===
@@ -341,7 +341,7 @@ export default function Home() {
 							variants={fadeInVariants}
 						>
 							<div className="text-center flex flex-col items-center justify-center max-w-fit">
-								<div className="bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center">
+								<div className="bg-[#EEF5FF] mb-2  rounded-2xl h-32 w-[16rem] flex justify-center">
 									<Image
 										src={homeAssets.phoneStatus}
 										alt="Phone status icon"
@@ -366,7 +366,7 @@ export default function Home() {
 											? "/beneficiaries"
 											: "#"
 									}
-									className={`bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === EDITE_OS_DADOS_DE_UM_BENEFICIARIO ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
+									className={`bg-[#EEF5FF] mb-2 rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === EDITE_OS_DADOS_DE_UM_BENEFICIARIO ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
 									scroll={challenge === EDITE_OS_DADOS_DE_UM_BENEFICIARIO}
 								>
 									<Image
@@ -393,7 +393,7 @@ export default function Home() {
 											? "/insurance-coverages"
 											: "#"
 									}
-									className={`bg-blue-200  rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === VEJA_SUAS_COBERTURAS_DE_MORTE ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
+									className={`bg-[#EEF5FF] mb-2 rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === VEJA_SUAS_COBERTURAS_DE_MORTE ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
 									scroll={challenge === VEJA_SUAS_COBERTURAS_DE_MORTE}
 								>
 									<Image
@@ -414,7 +414,7 @@ export default function Home() {
 							variants={fadeInVariants}
 						>
 							<div className="text-center flex flex-col items-center justify-center max-w-fit">
-								<div className="bg-blue-200 rounded-2xl h-32 w-[16rem] flex justify-center">
+								<div className="bg-[#EEF5FF] mb-2 rounded-2xl h-32 w-[16rem] flex justify-center">
 									<Image
 										src={homeAssets.shield}
 										alt="shield checked icon"
@@ -440,7 +440,7 @@ export default function Home() {
 											? "/dados-cadastrais"
 											: "#"
 									}
-									className={`bg-blue-200 rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === ADICIONE_UM_NOVO_EMAIL || challenges === ADICIONE_UM_NOVO_ENDERECO ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
+									className={`bg-[#EEF5FF] mb-2 rounded-2xl h-32 w-[16rem] flex justify-center ${challenges === ADICIONE_UM_NOVO_EMAIL || challenges === ADICIONE_UM_NOVO_ENDERECO ? "border-transparent active:border-transparent" : "active:border-red-900  ease-in-out transition-all border-4 border-transparent"}`}
 									scroll={
 										challenge === ADICIONE_UM_NOVO_EMAIL ||
 										challenge === ADICIONE_UM_NOVO_ENDERECO
