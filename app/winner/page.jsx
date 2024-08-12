@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import PrudentialLogo from "../assets/Prudential-Logo.png";
+import PrudentialLogo from "../assets/Prudential-Logo.svg";
 import Image from "next/image";
 import { TrophyIcon } from "../components/TrophyIcon";
 import Link from "next/link";

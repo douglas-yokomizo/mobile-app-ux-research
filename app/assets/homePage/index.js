@@ -11,7 +11,6 @@ import weekGoal from "./weekGoal.svg";
 import progressBar from "./progressBar.svg";
 import avatar from "../avatar.png";
 import arrow from "../menu/arrow.svg";
-import fullyLogo from "./fullyLogo.png";
 import medal from "./medal.svg";
 import steps from "./steps.svg";
 import heart from "./heart.svg";
@@ -19,7 +18,6 @@ import time from "./time.svg";
 import goodOrange from "./goodOrange.svg";
 import goodGreen from "./goodGreen.svg";
 import regular from "./regular.svg";
-import bannerHome from "./bannerHome.png";
 import phone from "./phone.svg";
 import whatsapp from "./whatsapp.svg";
 import dataPerson from "./data-person.svg";
@@ -42,7 +40,6 @@ export {
 	progressBar,
 	avatar,
 	arrow,
-	fullyLogo,
 	medal,
 	steps,
 	heart,
@@ -50,7 +47,6 @@ export {
 	goodOrange,
 	goodGreen,
 	regular,
-	bannerHome,
 	phone,
 	whatsapp,
 	dataPerson,

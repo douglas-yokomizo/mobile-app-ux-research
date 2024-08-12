@@ -5,6 +5,9 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import FooterNavigationHome from "../components/FooterNavigation";
 import * as homeAssets from "../assets/homePage";
+import fully from "./fully.svg";
+import objetivo from "./objetivo.svg";
+import banner from "./banner.svg";
 import Badge from "../components/Badge";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
@@ -267,7 +270,7 @@ export default function Home() {
 					variants={fadeInVariants}
 				>
 					<h2 className="mt-0 font-bold text-5xl mb-6">Acesso Rápido</h2>
-					<ul className="font-semibold keen-slider text-xl">
+					<ul className="font-semibold keen-slider text-2xl">
 						<motion.li
 							className="keen-slider__slide"
 							initial="hidden"
@@ -280,8 +283,8 @@ export default function Home() {
 									<Image
 										src={homeAssets.guardian}
 										alt="shield and sword icon"
-										height={48}
-										width={48}
+										height={58}
+										width={58}
 									/>
 								</div>
 								<p>Guardião</p>
@@ -326,8 +329,8 @@ export default function Home() {
 									<Image
 										src={homeAssets.coin}
 										alt="Coin icon"
-										height={48}
-										width={48}
+										height={58}
+										width={58}
 									/>
 								</Link>
 								<p>Pagamento</p>
@@ -345,8 +348,8 @@ export default function Home() {
 									<Image
 										src={homeAssets.phoneStatus}
 										alt="Phone status icon"
-										height={48}
-										width={48}
+										height={58}
+										width={58}
 									/>
 								</div>
 								<p>Atendimento</p>
@@ -372,8 +375,8 @@ export default function Home() {
 									<Image
 										src={homeAssets.peopleGroup}
 										alt="shield checked icon"
-										height={48}
-										width={48}
+										height={58}
+										width={58}
 									/>
 								</Link>
 								<p>Beneficiários</p>
@@ -399,8 +402,8 @@ export default function Home() {
 									<Image
 										src={homeAssets.heartShield}
 										alt="shield checked icon"
-										height={48}
-										width={48}
+										height={58}
+										width={58}
 									/>
 								</Link>
 								<p>Coberturas</p>
@@ -418,8 +421,8 @@ export default function Home() {
 									<Image
 										src={homeAssets.shield}
 										alt="shield checked icon"
-										height={48}
-										width={48}
+										height={58}
+										width={58}
 									/>
 								</div>
 								<p>Acionar Seguro</p>
@@ -449,8 +452,8 @@ export default function Home() {
 									<Image
 										src={homeAssets.dataPerson}
 										alt="resume icon"
-										height={48}
-										width={48}
+										height={58}
+										width={58}
 									/>
 								</Link>
 								<p>
@@ -471,11 +474,7 @@ export default function Home() {
 				>
 					<div className="p-10 w-11/12 bg-blue-50 text-black rounded-lg shadow-lg">
 						<div className="flex items-center justify-between">
-							<Image
-								src={homeAssets.fullyLogo}
-								alt="Logo Fully"
-								className="w-20"
-							/>
+							<Image src={fully} alt="Logo Fully" className="w-48" />
 							<button
 								onClick={toggleDetails}
 								className="flex p-4"
@@ -512,12 +511,20 @@ export default function Home() {
 								className="w-1/2 rounded-full"
 							/>
 						</div>
+						<div className="flex flex-col  my-10 gap-6">
+							<p className=" text-4xl text-[#5E5E63]">Meu objetivo semanal</p>
+							<Image
+								src={objetivo}
+								alt="Meus objetivos"
+								className="w-full flex-grow"
+							/>
+						</div>
 						<div className="flex items-center my-12">
 							<strong className="font-bold text-4xl mr-4">2 de 3</strong>
 							<Image
 								src={homeAssets.progressBar}
 								alt="progress bar image"
-								className="w-3/5 mr-4"
+								className="w-3/5 mr-4 flex-grow"
 							/>
 							<div className="flex 1/3 items-center gap-2 bg-white p-3 py-4 rounded-full">
 								<Image src={homeAssets.gold} alt="gold icon" className="w-7" />
@@ -635,12 +642,12 @@ export default function Home() {
 				>
 					<ul className="flex overflow-hidden">
 						<Image
-							src={homeAssets.bannerHome}
+							src={banner}
 							alt="banner image"
 							className="flex-shrink-0 w-[90vw] rounded-2xl bg-cover text-black p-8"
 						/>
 						<Image
-							src={homeAssets.bannerHome}
+							src={banner}
 							alt="banner image"
 							className="flex-shrink-0 w-[90vw] rounded-2xl bg-cover text-black p-8"
 						/>

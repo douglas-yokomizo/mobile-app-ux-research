@@ -35,6 +35,9 @@ export function GameContextProvider({ children }) {
 
 	function setGameChallenge(challenge) {
 		setChallenge(challenge);
+		if (localStorage.getItem("challenge")) {
+			localStorage.removeItem("challenge");
+		}
 		localStorage.setItem("challenge", challenge);
 	}
 
@@ -69,13 +72,18 @@ export function GameContextProvider({ children }) {
 
 	function setGameSession(session) {
 		setSession(session);
+		if (localStorage.getItem("session")) {
+			localStorage.removeItem("session");
+		}
 		localStorage.setItem("session", JSON.stringify(session));
 	}
 
 	function setGamePlayer(player) {
 		setPlayer(player);
+		if (localStorage.getItem("player")) {
+			localStorage.removeItem("player");
+		}
 		localStorage.setItem("player", JSON.stringify(player));
-		console.log(player);
 	}
 
 	async function finishGame() {
