@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import HeaderNavigation from "@/app/components/HeaderNavigation";
 import Tabs from "@/app/components/Tabs";
 import TitleWithIcon from "@/app/components/TitleWithIcon";
@@ -10,11 +10,28 @@ import percentage from "@/app/assets/percentage.svg";
 import infoIcon from "@/app/assets/info-icon.svg";
 import shareIcon from "@/app/assets/share.svg";
 import { arrow } from "@/app/assets/homePage";
-import { useRouter } from "next/navigation";
+import BeneficiaryCard from "@/app/components/BeneficiaryCard";
 
 const BeneficiariesDetailsPage = () => {
-  const [showOptions, setShowOptions] = useState(false);
-  const router = useRouter();
+  const [activeCard, setActiveCard] = useState(null);
+  const cardRefs = useRef([]);
+
+  const handleToggle = (index) => {
+    setActiveCard(activeCard === index ? null : index);
+  };
+
+  const handleClickOutside = (event) => {
+    if (cardRefs.current.every((ref) => ref && !ref.contains(event.target))) {
+      setActiveCard(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -65,96 +82,37 @@ const BeneficiariesDetailsPage = () => {
             </div>
           </div>
 
-          <div className="mt-14 bg-gray-light p-8 rounded-2xl">
-            <div className="border-l-8 border-blue-text px-8 rounded-lg">
-              <div className="flex justify-between items-center">
-                <h3 className="text-3xl font-bold">Maria Souza Linhares</h3>
-                <div className="flex hover:cursor-pointer flex-col text-5xl pb-10 font-bold leading-[16px] text-blue-text">
-                  <span>.</span>
-                  <span>.</span>
-                  <span>.</span>
-                </div>
-              </div>
-              <div className="flex justify-between mt-4">
-                <div className="text-3xl">
-                  <p className="text-gray-text mb-2">Parentesco</p>
-                  <p>Cônjuge</p>
-                </div>
-                <div className="text-3xl">
-                  <p className="text-gray-text mb-2">
-                    Percentual de participação
-                  </p>
-                  <p>50%</p>
-                </div>
-              </div>
-            </div>
+          <div ref={(el) => (cardRefs.current[0] = el)}>
+            <BeneficiaryCard
+              name={"Maria Souza Linhares"}
+              relationship={"Cônjuge"}
+              percentage={"50%"}
+              isActive={activeCard === 0}
+              onToggle={() => handleToggle(0)}
+              borderColor={"border-blue-text"}
+            />
           </div>
 
-          <div className="mt-10 bg-gray-light p-8 rounded-2xl">
-            <div className="border-l-8 border-orange-base px-8 rounded-lg">
-              <div className="flex justify-between items-center relative">
-                <h3 className="text-3xl font-bold">Jorge Souza Linhares</h3>
-                <div
-                  onClick={() => setShowOptions(!showOptions)}
-                  className="flex hover:cursor-pointer flex-col text-5xl pb-10 font-bold leading-[16px] text-blue-text"
-                >
-                  <span>.</span>
-                  <span>.</span>
-                  <span>.</span>
-                </div>
-                {showOptions && (
-                  <div className="absolute right-0 top-16 bg-white border text-3xl w-5/12 border-gray-300 p-4 rounded-2xl shadow-lg mt-2">
-                    <button
-                      onClick={() => router.push("/beneficiaries/details/edit")}
-                      className="block w-full text-left px-2 py-6 hover:bg-gray-100"
-                    >
-                      Editar
-                    </button>
-                    <hr className="border border-divider" />
-                    <button className="block w-full text-left px-2 py-6 hover:bg-gray-100">
-                      Excluir
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="flex justify-between mt-4">
-                <div className="text-3xl">
-                  <p className="text-gray-text mb-2">Parentesco</p>
-                  <p>Filho(a)</p>
-                </div>
-                <div className="text-3xl">
-                  <p className="text-gray-text mb-2">
-                    Percentual de participação
-                  </p>
-                  <p>20%</p>
-                </div>
-              </div>
-            </div>
+          <div ref={(el) => (cardRefs.current[1] = el)}>
+            <BeneficiaryCard
+              name={"Jorge Souza Linhares"}
+              relationship={"Filho(a)"}
+              percentage={"20%"}
+              isActive={activeCard === 1}
+              onToggle={() => handleToggle(1)}
+              borderColor={"border-orange-base"}
+            />
           </div>
 
-          <div className="mt-10 bg-gray-light p-8 rounded-2xl">
-            <div className="border-l-8 border-purple-base px-8 rounded-lg">
-              <div className="flex justify-between items-center">
-                <h3 className="text-3xl font-bold">Hariane Souza Linhares</h3>
-                <div className="flex hover:cursor-pointer flex-col text-5xl pb-10 font-bold leading-[16px] text-blue-text">
-                  <span>.</span>
-                  <span>.</span>
-                  <span>.</span>
-                </div>
-              </div>
-              <div className="flex justify-between mt-4">
-                <div className="text-3xl">
-                  <p className="text-gray-text mb-2">Parentesco</p>
-                  <p>Filho(a)</p>
-                </div>
-                <div className="text-3xl">
-                  <p className="text-gray-text mb-2">
-                    Percentual de participação
-                  </p>
-                  <p>30%</p>
-                </div>
-              </div>
-            </div>
+          <div ref={(el) => (cardRefs.current[2] = el)}>
+            <BeneficiaryCard
+              name={"Hariane Souza Linhares"}
+              relationship={"Filho(a)"}
+              percentage={"30%"}
+              isActive={activeCard === 2}
+              onToggle={() => handleToggle(2)}
+              borderColor={"border-purple-base"}
+            />
           </div>
         </section>
       </div>
