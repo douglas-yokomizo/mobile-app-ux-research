@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useGame } from "@/app/hooks/useGame";
 import { CHALLENGES } from "../../data/challenges";
 import { Spinner } from "@/app/components/Spinner";
 import { StartIcon } from "./StartIcon";
-import PrudentialLogo from "../../assets/Prudential-Logo.png";
+import PrudentialLogo from "../../assets/Prudential-Logo.svg";
 import Image from "next/image";
 import { RunnerIcon } from "./RunnerIcon";
 

@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import {
 	ACESSE_SEU_EXTRATO_DE_NOVEMBRO,
 	PAGUE_UMA_APOLICE_EM_ATRASO,
+	VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO,
 } from "../data/challenges";
 import { useGame } from "../hooks/useGame";
 
@@ -47,7 +48,13 @@ export default function Pagamento() {
 				<motion.p
 					initial="hidden"
 					animate="visible"
+					className="cursor-pointer"
 					custom={1}
+					onClick={() =>
+						challenge !== ACESSE_SEU_EXTRATO_DE_NOVEMBRO
+							? router.push("#")
+							: router.push("/extratoCompleto")
+					}
 					variants={fadeInVariants}
 				>
 					Extrato
@@ -210,7 +217,13 @@ export default function Pagamento() {
 
 				<section>
 					<div className="border-green-dark border-2 bg-green-white rounded-lg w-min">
-						<p className="text-3xl p-2 text-green-dark font-semibold">Pago</p>
+						<p className="text-3xl p-2 text-green-dark font-semibold">
+							{challenge === PAGUE_UMA_APOLICE_EM_ATRASO ? (
+								<>Em atraso</>
+							) : (
+								<>Pago</>
+							)}
+						</p>
 					</div>
 
 					<div className="text-4xl flex justify-between my-5">
@@ -218,7 +231,7 @@ export default function Pagamento() {
 						<p className="text-gray-500"> 08/01/24</p>
 					</div>
 
-					<div className="text-5xl flex justify-between my-8">
+					<div className="text-[2.60rem] flex justify-between my-8">
 						<p className="font-bold">Vida Inteira</p>
 						<p> R$ 400,45</p>
 					</div>
@@ -257,7 +270,7 @@ export default function Pagamento() {
 						<p className="text-gray-500"> 01/01/24</p>
 					</div>
 
-					<div className="text-5xl flex justify-between my-8">
+					<div className="text-[2.60rem] flex justify-between my-8">
 						<p className="font-bold">Filhos</p>
 						<p>R$ 600,00</p>
 					</div>
@@ -290,7 +303,7 @@ export default function Pagamento() {
 						<p className="text-gray-500"> 01/01/24</p>
 					</div>
 
-					<div className="text-5xl flex justify-between my-8">
+					<div className="text-[2.60rem] flex justify-between my-8">
 						<p className="font-bold">Esposa</p>
 						<p>R$ 200,00</p>
 					</div>

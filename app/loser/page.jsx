@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import PrudentialLogo from "../assets/Prudential-Logo.png";
+import PrudentialLogo from "../assets/Prudential-Logo.svg";
 import { useEffect } from "react";
 import { XIcon } from "../components/XIcon";
 import Link from "next/link";
