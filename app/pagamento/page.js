@@ -18,6 +18,7 @@ import {
 	VEJA_QUAIS_APOLICES_VOCE_PAGA_NO_CARTAO_DE_CREDITO,
 } from "../data/challenges";
 import { useGame } from "../hooks/useGame";
+import { cn } from "../lib/utils";
 
 export default function Pagamento() {
 	const fadeInVariants = {
@@ -50,11 +51,7 @@ export default function Pagamento() {
 					animate="visible"
 					className="cursor-pointer"
 					custom={1}
-					onClick={() =>
-						challenge !== ACESSE_SEU_EXTRATO_DE_NOVEMBRO
-							? router.push("#")
-							: router.push("/extratoCompleto")
-					}
+					onClick={() => router.push("#extrato-completo")}
 					variants={fadeInVariants}
 				>
 					Extrato
@@ -216,8 +213,16 @@ export default function Pagamento() {
 				</section>
 
 				<section>
-					<div className="border-green-dark border-2 bg-green-white rounded-lg w-min">
-						<p className="text-3xl p-2 text-green-dark font-semibold">
+					<div
+						className={cn(
+							"border-green-dark border-2 bg-green-white rounded-lg w-min",
+							{
+								"bg-[#F8DFE0] text-[#D53943] border-[#D53943]":
+									challenge === PAGUE_UMA_APOLICE_EM_ATRASO,
+							},
+						)}
+					>
+						<p className="text-3xl p-2  font-semibold">
 							{challenge === PAGUE_UMA_APOLICE_EM_ATRASO ? (
 								<>Em atraso</>
 							) : (
@@ -336,6 +341,7 @@ export default function Pagamento() {
 							? "/extratoCompleto"
 							: "#"
 					}
+					id="extrato-completo"
 					scroll={challenge === ACESSE_SEU_EXTRATO_DE_NOVEMBRO}
 				>
 					<motion.button

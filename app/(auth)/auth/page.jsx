@@ -141,7 +141,7 @@ export default function Auth() {
 							game_challenge: challenge,
 							game_started: sessions.length > 0,
 							countdown_start_time:
-								sessions.length > 0 ? new Date().toISOString() : null,
+								sessions.length > 0 ? new Date().toLocaleDateString() : null,
 						})
 						.eq("id", session.id)
 						.select()
