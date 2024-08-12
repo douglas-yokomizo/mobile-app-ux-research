@@ -3,7 +3,7 @@ import questionMark from "./questionMark.svg";
 import uberCover from "./uberCover.png";
 import xboxCover from "./xboxCover.png";
 import ziftCover from "./ziftCover.png";
-import ifoodCover from "./ifoodCover.png";
+import kopenhagenCover from "./kopenhagen.jpg";
 import add from "./add.svg";
 import resume from "./resume.svg";
 import prudentialIcon from "./prudential.svg";
@@ -17,7 +17,7 @@ export {
   uberCover,
   xboxCover,
   ziftCover,
-  ifoodCover,
+  kopenhagenCover,
   add,
   resume,
   prudentialIcon,
