@@ -8,7 +8,9 @@ const RewardCard = ({ cover, title, value, onClick }) => {
       className="bg-white shadow-lg rounded-2xl overflow-hidden w-2/5 cursor-pointer"
       onClick={onClick}
     >
-      <Image src={cover} alt={title} className="object-cover w-full" />
+      <div className="relative w-full h-96">
+        <Image src={cover} alt={title} layout="fill" objectFit="cover" />
+      </div>
       <div className="p-9 bg-gray-light">
         <h3 className="text-4xl font-bold mb-2">{title}</h3>
         <p className="text-3xl my-8">
